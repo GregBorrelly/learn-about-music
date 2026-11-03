@@ -1,12 +1,22 @@
-# Bird With Strings
+# Learn About Music
 
+Deep dives into classic recordings, one page at a time.
+
+## Pages
+
+### [Bird With Strings](bird-with-strings/)
 A one-page deep dive into Charlie Parker's *Bird On Verve, Volume 3 (With Strings)* (Verve 817 444-1).
 
-## Publish on GitHub Pages
+### [Left Channel, Right Channel](clara-fanny-stereo/)
+A one-page deep dive into Hyperion KA66331: Clara Schumann's Piano Trio in G minor, Op. 17 and Fanny Mendelssohn's Piano Trio in D minor, Op. 11, played by the Dartington Piano Trio.
 
-1. Create a new public repository on GitHub, for example `bird-with-strings`.
-2. Upload `index.html`, `.nojekyll` and this README to the repository root (Add file > Upload files).
-3. Go to Settings > Pages. Under "Build and deployment", choose "Deploy from a branch", pick `main` and `/ (root)`, then Save.
-4. After a minute the site is live at `https://<your-username>.github.io/bird-with-strings/`.
+## Live Site
 
-Everything is in `index.html`. Fonts load from Google Fonts; there is no build step.
+Visit: [https://gregborrelly.github.io/learn-about-music/](https://gregborrelly.github.io/learn-about-music/)
+
+## Technical Notes
+
+- All pages are self-contained HTML files
+- Fonts load from Google Fonts
+- No build step required
+- `.nojekyll` file ensures GitHub Pages serves the site correctly

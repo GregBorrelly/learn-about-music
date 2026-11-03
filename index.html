@@ -3,909 +3,123 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bird With Strings</title>
-<meta name="description" content="A deep dive into Bird On Verve, Volume 3 (With Strings): Charlie Parker's July 5, 1950 strings session and two takes of Relaxin' With Lee.">
+<title>Learn About Music</title>
+<meta name="description" content="Deep dives into classic jazz and classical recordings">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 <style>
-:root{
-  --paper:#DDE3D4;
-  --paper-deep:#CED6C3;
-  --ink:#1B2238;
-  --ink-soft:#3E4660;
-  --mustard:#D6A12E;
-  --red:#A8382B;
-  --slate:#55688A;
-  --vinyl:#161A26;
-  --rule:rgba(27,34,56,.18);
-  --measure:66ch;
-  --display:"Gloock", Georgia, serif;
-  --text:"Source Serif 4", Georgia, serif;
+:root {
+  --paper: #F5F1E8;
+  --ink: #1A1A1A;
+  --accent: #8B4513;
+  --hover: #B8860B;
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 1.125rem/1.62 var(--text);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
-a{color:var(--red);text-decoration-thickness:1px;text-underline-offset:.18em}
-a:hover{color:var(--ink)}
-:focus-visible{outline:3px solid var(--mustard);outline-offset:3px;border-radius:2px}
-::selection{background:var(--mustard);color:var(--ink)}
-.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:20}
-.skip:focus{left:1rem;top:1rem}
-
-/* ---------- Hero ---------- */
-.hero{position:relative;min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;padding:clamp(1.5rem,4vw,4rem);overflow:hidden;background:var(--ink);color:var(--paper)}
-.hero-copy{position:relative;z-index:2;max-width:38rem}
-.hero h1{font:400 clamp(4rem,11vw,10.5rem)/.86 var(--display);letter-spacing:-.025em;margin:0 0 2rem}
-.hero h1 > span{display:block}
-.hero h1 .strings{color:var(--mustard);padding-left:.5em}
-.hero p.lede{font-size:clamp(1.1rem,1.6vw,1.35rem);max-width:30rem;margin:0 0 2.2rem;color:#C9CFDD}
-.hero .credit{font-size:.95rem;color:#9AA3BA;margin:0}
-.hero .credit strong{color:var(--paper);font-weight:600}
-.hero-deck{position:relative;justify-self:end;width:min(46vw,640px);aspect-ratio:1}
-.hero-scroll{position:absolute;left:clamp(1.5rem,4vw,4rem);bottom:1.5rem;font-size:.9rem;color:#9AA3BA;text-decoration:none;z-index:2}
-.hero-scroll:hover{color:var(--mustard)}
-
-/* ---------- Record ---------- */
-.record{position:absolute;inset:0;border-radius:50%;
-  background:
-    radial-gradient(circle at 50% 50%, transparent 0 33%, rgba(255,255,255,.035) 33.2% 33.6%, transparent 33.8%),
-    repeating-radial-gradient(circle at 50% 50%, #1d2232 0 1.2px, #12151f 1.4px 2.6px),
-    var(--vinyl);
-  box-shadow:0 30px 60px -20px rgba(0,0,0,.6), inset 0 0 0 2px rgba(255,255,255,.04);
-  will-change:transform}
-.record::after{content:"";position:absolute;inset:0;border-radius:50%;
-  background:conic-gradient(from 210deg, transparent 0 8%, rgba(255,255,255,.10) 12%, transparent 18% 58%, rgba(255,255,255,.07) 62%, transparent 68%);
-  mix-blend-mode:screen;pointer-events:none}
-.label{position:absolute;inset:33%;border-radius:50%;background:var(--mustard);color:var(--ink);display:grid;place-items:center;text-align:center;overflow:hidden}
-.label svg{width:100%;height:100%}
-.spindle{position:absolute;left:50%;top:50%;width:3.2%;aspect-ratio:1;border-radius:50%;background:var(--paper);transform:translate(-50%,-50%);box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
-.tonearm{position:absolute;right:-6%;top:-4%;width:52%;transform-origin:86% 12%;transform:rotate(-24deg);transition:transform 1.2s cubic-bezier(.2,.8,.2,1);pointer-events:none;z-index:3}
-.tonearm svg{width:100%;display:block;overflow:visible}
-
-/* ---------- Layout ---------- */
-.layout{display:grid;grid-template-columns:minmax(14rem,1fr) minmax(0,var(--measure)) minmax(0,.6fr);column-gap:clamp(1.5rem,4vw,4rem);padding:0 clamp(1.25rem,4vw,4rem)}
-.rail{grid-column:1;position:relative}
-.deck{position:sticky;top:5vh;margin-top:5rem;width:min(100%,260px);margin-left:auto}
-.deck-stage{position:relative;aspect-ratio:1}
-.deck-now{margin-top:1.4rem;font-size:.95rem;color:var(--ink-soft);min-height:3em}
-.deck-now b{display:block;font:400 1.35rem/1.15 var(--display);color:var(--ink)}
-.deck nav ol{list-style:none;margin:1.6rem 0 0;padding:0;border-top:1px solid var(--rule)}
-.deck nav a{display:block;padding:.3rem 0;border-bottom:1px solid var(--rule);color:var(--ink-soft);text-decoration:none;font-size:.95rem}
-.deck nav a[aria-current="true"]{color:var(--ink);font-weight:600}
-.deck nav a:hover{color:var(--red)}
-main{grid-column:2;padding:6rem 0 8rem}
-
-section{padding-top:4.5rem;scroll-margin-top:2rem}
-section:first-child{padding-top:0}
-h2{font:400 clamp(2.4rem,5vw,3.6rem)/1 var(--display);letter-spacing:-.015em;margin:0 0 1.6rem}
-h3{font:400 1.6rem/1.15 var(--display);margin:2.4rem 0 .6rem}
-p{margin:0 0 1.1em}
-.lead{font-size:1.32rem;line-height:1.5;color:var(--ink)}
-em{font-style:italic}
-strong{font-weight:600}
-
-/* glance */
-.glance{width:100%;border-collapse:collapse;font-size:1rem;margin:1.6rem 0 2rem}
-.glance th,.glance td{text-align:left;vertical-align:top;padding:.7rem 0;border-top:1px solid var(--rule)}
-.glance th{width:34%;font-weight:600;padding-right:1.2rem;color:var(--ink-soft)}
-.glance tr:last-child th,.glance tr:last-child td{border-bottom:1px solid var(--rule)}
-.note{border-left:3px solid var(--mustard);padding:.2rem 0 .2rem 1rem;color:var(--ink-soft);font-size:1rem}
-
-/* tracklist */
-.side{margin:2.2rem 0 .4rem;font:400 1.15rem var(--display);color:var(--slate)}
-.tracks{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
-.track{border-bottom:1px solid var(--rule)}
-.track > button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:2.6rem 1fr auto 1.5rem;align-items:baseline;gap:.6rem;padding:1rem 0}
-.track > button:focus-visible{outline:3px solid var(--mustard);outline-offset:2px}
-.t-pos{color:var(--slate);font-size:.95rem;font-variant-numeric:tabular-nums}
-.t-name{font:400 1.45rem/1.15 var(--display)}
-.t-meta{display:block;font:400 .92rem/1.4 var(--text);color:var(--ink-soft);margin-top:.2rem}
-.t-time{font-size:.95rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-.t-icon{width:1.1rem;height:1.1rem;justify-self:end;position:relative}
-.t-icon::before,.t-icon::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:var(--ink);transition:transform .35s}
-.t-icon::after{transform:rotate(90deg)}
-.track[data-open="true"] .t-icon::after{transform:rotate(0)}
-.track[data-open="true"] .t-name{color:var(--red)}
-.t-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1)}
-.track[data-open="true"] .t-body{grid-template-rows:1fr}
-.t-inner{overflow:hidden}
-.t-cols{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;padding:0 0 1.4rem 3.2rem;font-size:1rem}
-.t-cols h4{font:600 .95rem var(--text);margin:0 0 .4rem;color:var(--slate)}
-.t-cols p{margin:0}
-.quintet .t-pos{color:var(--red)}
-
-/* performers */
-.people{display:grid;gap:0;margin-top:1rem}
-.person{display:grid;grid-template-columns:12rem 1fr;gap:1.4rem;padding:1.3rem 0;border-top:1px solid var(--rule)}
-.person h3{margin:0;font-size:1.35rem}
-.person p{margin:0}
-
-/* timeline */
-.trail{list-style:none;margin:1.6rem 0;padding:0;position:relative}
-.trail::before{content:"";position:absolute;left:5.3rem;top:.5rem;bottom:.5rem;width:2px;background:var(--ink)}
-.trail li{display:grid;grid-template-columns:4.6rem 1fr;gap:1.6rem;padding:.55rem 0;position:relative}
-.trail li::before{content:"";position:absolute;left:4.98rem;top:1.05rem;width:.75rem;height:.75rem;border-radius:50%;background:var(--paper);border:2px solid var(--ink)}
-.trail li.here::before{background:var(--mustard)}
-.trail time{font:400 1.25rem var(--display);font-variant-numeric:tabular-nums}
-
-/* pull */
-.pull{font:400 clamp(1.8rem,3.4vw,2.6rem)/1.15 var(--display);margin:2.6rem 0;padding:0;color:var(--ink)}
-.pull::before{content:"";display:block;width:3rem;height:3px;background:var(--red);margin-bottom:1.1rem}
-
-/* listen */
-.howto{background:var(--ink);color:var(--paper);margin:1.4rem calc(-1 * clamp(1rem,3vw,2.5rem));padding:clamp(1.4rem,3vw,2.5rem);border-radius:4px}
-.howto h3{color:var(--mustard);margin-top:0}
-.howto a{color:var(--mustard)}
-
-/* recs */
-.recs{list-style:none;margin:1rem 0 0;padding:0;counter-reset:r}
-.recs li{padding:1rem 0;border-top:1px solid var(--rule)}
-.recs li:last-child{border-bottom:1px solid var(--rule)}
-.recs b{font:400 1.3rem/1.2 var(--display);display:block;margin-bottom:.2rem}
-
-/* tabs */
-.tabs{display:flex;gap:.4rem;margin:1.6rem 0 0;border-bottom:2px solid var(--ink)}
-.tabs button{all:unset;cursor:pointer;padding:.6rem 1.1rem .5rem;font:400 1.2rem var(--display);color:var(--ink-soft);border-radius:4px 4px 0 0;position:relative;top:2px}
-.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
-.tabs button:focus-visible{outline:3px solid var(--mustard)}
-.panel{padding-top:.4rem}
-.panel[hidden]{display:none}
-.links{list-style:none;margin:0;padding:0}
-.links li{border-bottom:1px solid var(--rule)}
-.links a{display:grid;grid-template-columns:1fr auto;gap:1rem;padding:1rem 0;text-decoration:none;color:var(--ink)}
-.links a:hover .l-title{color:var(--red)}
-.l-title{font:400 1.25rem/1.2 var(--display);display:block}
-.l-why{display:block;font-size:.98rem;color:var(--ink-soft);margin-top:.25rem}
-.l-src{font-size:.85rem;color:var(--slate);white-space:nowrap;align-self:start;padding-top:.35rem}
-.caveat{font-size:.95rem;color:var(--ink-soft);margin:1rem 0 0}
-
-.sources{columns:2 18rem;column-gap:2rem;font-size:.92rem;padding-left:1.1rem}
-.sources li{break-inside:avoid;margin-bottom:.35rem}
-
-footer{background:var(--ink);color:#9AA3BA;padding:3rem clamp(1.25rem,4vw,4rem);font-size:.92rem}
-footer p{max-width:60ch;margin:0 0 .6rem}
-
-/* ---------- Responsive ---------- */
-@media (max-width:1100px){
-  .layout{grid-template-columns:minmax(0,1fr)}
-  .rail{display:none}
-  main{grid-column:1;max-width:var(--measure);margin:0 auto}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1.125rem/1.6 "Newsreader", Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
 }
-@media (max-width:760px){
-  .hero{grid-template-columns:1fr;align-content:center;padding-top:4rem;padding-bottom:5rem}
-  .hero-deck{position:absolute;width:88vw;right:-30vw;top:auto;bottom:-26vw;opacity:.9}
-  .hero{align-content:start;padding-top:18vh}
-  .hero h1 .strings{padding-left:.3em}
-  .t-cols{grid-template-columns:1fr;padding-left:0}
-  .track > button{grid-template-columns:2.2rem 1fr auto 1.2rem}
-  .person{grid-template-columns:1fr;gap:.4rem}
-  .glance th{width:40%}
-  .trail::before{left:4.3rem}.trail li{grid-template-columns:3.7rem 1fr}.trail li::before{left:3.98rem}
+main {
+  max-width: 42rem;
+  text-align: center;
 }
-@media (prefers-reduced-motion:reduce){
-  .tonearm,.t-body,.t-icon::before,.t-icon::after{transition:none}
+h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  letter-spacing: -.02em;
 }
-
-/* ---------- Wow layer ---------- */
-.hero-strings{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
-.hero-deck{z-index:2}
-.hero-copy{z-index:3}
-.hero .record{cursor:grab;touch-action:none}
-.hero .record.dragging{cursor:grabbing}
-.hint{margin:1.4rem 0 0;font-size:.95rem;color:var(--mustard)}
-.sound{position:fixed;top:1rem;right:1rem;z-index:30;display:flex;align-items:center;gap:.55rem;padding:.55rem .95rem .55rem .75rem;border:1px solid rgba(221,227,212,.35);border-radius:999px;background:rgba(27,34,56,.82);color:var(--paper);font:400 .95rem var(--text);cursor:pointer;backdrop-filter:blur(6px)}
-.sound:hover{border-color:var(--mustard)}
-.sound .bars{display:flex;align-items:flex-end;gap:2px;height:14px}
-.sound .bars i{display:block;width:3px;height:4px;background:var(--mustard);border-radius:1px}
-.sound[aria-pressed="true"] .bars i{animation:eq 1s ease-in-out infinite}
-.sound[aria-pressed="true"] .bars i:nth-child(2){animation-delay:-.3s}
-.sound[aria-pressed="true"] .bars i:nth-child(3){animation-delay:-.6s}
-@keyframes eq{0%,100%{height:4px}50%{height:14px}}
-
-.stage-wrap{margin:2.4rem 0 1rem}
-.stage-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:1rem}
-.stage-head h3{margin:0}
-.seg{display:inline-flex;border:2px solid var(--ink);border-radius:999px;padding:3px}
-.seg button{all:unset;cursor:pointer;padding:.35rem .9rem;border-radius:999px;font-size:.95rem;color:var(--ink-soft)}
-.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-.seg button:focus-visible{outline:3px solid var(--mustard)}
-.stage{position:relative;aspect-ratio:16/10;background:
-  radial-gradient(ellipse 70% 55% at 50% 100%, rgba(214,161,46,.28), transparent 70%),
-  var(--ink);border-radius:6px;overflow:hidden}
-.stage::after{content:"Audience";position:absolute;left:50%;bottom:.6rem;transform:translateX(-50%);font-size:.8rem;color:#7F88A3}
-.seat{all:unset;box-sizing:border-box;position:absolute;width:3.2rem;height:3.2rem;margin:-1.6rem 0 0 -1.6rem;border-radius:50%;display:grid;place-items:center;font:400 1rem var(--display);cursor:pointer;transition:left .9s cubic-bezier(.2,.8,.2,1),top .9s cubic-bezier(.2,.8,.2,1),transform .25s,opacity .5s}
-.seat:hover,.seat:focus-visible,.seat.on{transform:scale(1.18)}
-.seat:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
-.seat.strings{background:var(--mustard);color:var(--ink)}
-.seat.winds{background:var(--slate);color:var(--paper)}
-.seat.rhythm{background:var(--paper);color:var(--ink)}
-.seat.lead{background:var(--red);color:var(--paper);width:4rem;height:4rem;margin:-2rem 0 0 -2rem;font-size:1.2rem}
-.seat.gone{opacity:0;pointer-events:none;transform:scale(.4)}
-.seat.ping{animation:ping .7s ease-out}
-@keyframes ping{0%{box-shadow:0 0 0 0 rgba(214,161,46,.7)}100%{box-shadow:0 0 0 22px rgba(214,161,46,0)}}
-.stage-cap{min-height:3.2em;margin:.9rem 0 0;font-size:1rem}
-.stage-cap b{font:400 1.3rem var(--display);font-weight:400}
-.legend{display:flex;flex-wrap:wrap;gap:1.1rem;font-size:.9rem;color:var(--ink-soft);margin:.4rem 0 0;padding:0;list-style:none}
-.legend li::before{content:"";display:inline-block;width:.75rem;height:.75rem;border-radius:50%;margin-right:.4rem;vertical-align:-.05em;background:var(--c);box-shadow:inset 0 0 0 1.5px var(--ink)}
-@media (max-width:760px){.seat{width:2.4rem;height:2.4rem;margin:-1.2rem 0 0 -1.2rem;font-size:.8rem}.seat.lead{width:3rem;height:3rem;margin:-1.5rem 0 0 -1.5rem}.stage{aspect-ratio:4/3}.sound{top:auto;bottom:1rem}}
-@media (prefers-reduced-motion:reduce){.seat{transition:none}.seat.ping{animation:none}.sound .bars i{animation:none!important}}
-
-/* ---------- Mobile layer ---------- */
-.mobile-intro{display:none}
-.hint .coarse{display:none}
-@media (pointer:coarse){.hint .fine{display:none}.hint .coarse{display:inline}}
-.mini{display:none}
-.sheet{border:0;padding:0;margin:auto auto 0;width:100%;max-width:none;max-height:80svh;background:var(--ink);color:var(--paper);border-radius:18px 18px 0 0}
-.sheet::backdrop{background:rgba(27,34,56,.55);backdrop-filter:blur(3px)}
-.sheet[open]{animation:sheetUp .38s cubic-bezier(.2,.8,.2,1)}
-@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
-.sheet-head{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.4rem .4rem}
-.sheet-head h2{font-size:1.8rem;margin:0;color:var(--paper)}
-.sheet-head button{all:unset;cursor:pointer;color:var(--mustard);font-size:1rem;padding:.4rem}
-.sheet ol{list-style:none;margin:0;padding:.4rem 1.4rem 2rem}
-.sheet a{display:block;padding:.75rem 0;border-bottom:1px solid rgba(221,227,212,.14);color:var(--paper);text-decoration:none;font:400 1.35rem var(--display)}
-.sheet a[aria-current="true"]{color:var(--mustard)}
-@media (max-width:1100px){
-  .mini{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.8rem;position:fixed;left:.6rem;right:.6rem;bottom:calc(.6rem + env(safe-area-inset-bottom));z-index:25;padding:.55rem .6rem .55rem .55rem;background:rgba(27,34,56,.92);color:var(--paper);border-radius:16px;backdrop-filter:blur(10px);box-shadow:0 14px 34px -12px rgba(0,0,0,.55);transform:translateY(140%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-  .mini.show{transform:none}
-  .mini-progress{position:absolute;left:14px;right:14px;top:0;height:2px;background:rgba(221,227,212,.14);border-radius:2px;overflow:hidden}
-  .mini-progress i{display:block;height:100%;width:0;background:var(--mustard)}
-  .mini-rec{position:relative;width:44px;height:44px}
-  .mini-rec .label{inset:30%}
-  .mini-now{all:unset;cursor:pointer;min-width:0}
-  .mini-now b{display:block;font:400 1.1rem/1.15 var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mini-now span{display:block;font-size:.82rem;color:#9AA3BA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mini-now:focus-visible,.mini-sound:focus-visible{outline:3px solid var(--mustard);outline-offset:3px;border-radius:6px}
-  .mini-sound{all:unset;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:rgba(221,227,212,.08)}
-  .mini-sound .bars{display:flex;align-items:flex-end;gap:2px;height:16px}
-  .mini-sound .bars i{display:block;width:3px;height:5px;background:var(--mustard);border-radius:1px}
-  .mini-sound[aria-pressed="true"] .bars i{animation:eq 1s ease-in-out infinite}
-  .mini-sound[aria-pressed="true"] .bars i:nth-child(2){animation-delay:-.3s}
-  .mini-sound[aria-pressed="true"] .bars i:nth-child(3){animation-delay:-.6s}
-  body.mini-on .sound{opacity:0;pointer-events:none}
-  .sound{transition:opacity .3s}
-  main{padding-bottom:10rem}
+p {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  margin: 0 0 2.5rem;
+  color: #4A4A4A;
 }
-@media (max-width:760px){
-  .sound{top:1rem;bottom:auto;right:1rem}
-  .hero{min-height:100svh;padding:12svh 1.5rem 0;align-content:start;display:block}
-  .hero h1{font-size:clamp(4.6rem,24vw,7rem);line-height:.84;margin-bottom:1.2rem}
-  .hero h1 span{display:block}
-  .hero h1 .strings{padding-left:0}
-  .hero .lede,.hero .credit,.hero-scroll{display:none}
-  .hint{margin-top:.6rem}
-  .hero-deck{position:absolute;width:128vw;left:50%;right:auto;top:auto;bottom:-38vw;transform:translateX(-50%);opacity:1}
-  .hero-deck .tonearm{right:4%;top:-6%;width:44%}
-  .mobile-intro{display:block;padding-top:3rem}
-  .mobile-intro .credit{font-size:.95rem;color:var(--ink-soft)}
-  .track[data-open="true"]{background:linear-gradient(90deg,rgba(214,161,46,.16),transparent)}
+.pages {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.5rem;
 }
-@media (prefers-reduced-motion:reduce){.mini,.sheet[open]{transition:none;animation:none}}
-@media (max-width:760px){.hero h1 .strings > span{display:block}}</style>
+.pages li {
+  background: white;
+  border: 2px solid #E0D8C8;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+.pages li:hover {
+  border-color: var(--hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.pages a {
+  display: block;
+  padding: 2rem;
+  text-decoration: none;
+  color: inherit;
+}
+.pages h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--accent);
+}
+.pages .desc {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+footer {
+  margin-top: 3rem;
+  font-size: 0.95rem;
+  color: #888;
+}
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+footer a:hover {
+  color: var(--hover);
+  text-decoration: underline;
+}
+</style>
 </head>
 <body>
-<a class="skip" href="#article">Skip to the article</a>
+<main>
+  <h1>Learn About Music</h1>
+  <p>Deep dives into classic recordings, one page at a time</p>
 
-<button class="sound" type="button" aria-pressed="false"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span data-sound-label>Turn sound on</span></button>
-<header class="hero">
-  <canvas class="hero-strings" aria-hidden="true"></canvas>
-  <div class="hero-copy">
-    <h1><span>Bird</span><span class="strings"><span>with</span> <span>strings</span></span></h1>
-    <p class="lede">Bebop's most radical musician, playing love songs over violins, a harp and a French horn, because he wanted to. A deep dive into one $20 record and the summer of 1950.</p>
-    <p class="credit"><strong>Charlie Parker</strong>, Bird On Verve, Volume 3 (With Strings). Verve 817 444-1, 1984 reissue of sessions from June 6 and July 5, 1950.</p>
-    <p class="hint"><span class="fine">Brush across the strings. Grab the record and spin it.</span><span class="coarse">Tap the strings. Spin the record with your thumb.</span></p>
-  </div>
-  <div class="hero-deck" aria-hidden="true" data-turntable>
-    <div class="record">
-      <div class="label">
-        <svg viewBox="0 0 200 200">
-          <defs><path id="arcTop" d="M30,100 a70,70 0 0,1 140,0"/><path id="arcBot" d="M38,100 a62,62 0 0,0 124,0"/></defs>
-          <text font-family="Gloock, serif" font-size="19" fill="#1B2238" letter-spacing="1"><textPath href="#arcTop" startOffset="50%" text-anchor="middle">Charlie Parker</textPath></text>
-          <text font-family="Source Serif 4, serif" font-size="11" fill="#1B2238"><textPath href="#arcBot" startOffset="50%" text-anchor="middle">New York, summer 1950</textPath></text>
-          <text x="100" y="134" font-family="Gloock, serif" font-size="13" fill="#A8382B" text-anchor="middle">33⅓</text>
-        </svg>
-      </div>
-      <div class="spindle"></div>
-    </div>
-    <div class="tonearm" data-arm>
-      <svg viewBox="0 0 300 300"><g fill="none" stroke="#DDE3D4" stroke-width="7" stroke-linecap="round"><path d="M258 36 L240 190 L190 262"/></g><circle cx="258" cy="36" r="26" fill="#55688A"/><circle cx="258" cy="36" r="10" fill="#DDE3D4"/><rect x="170" y="252" width="34" height="22" rx="3" transform="rotate(-38 187 263)" fill="#D6A12E"/></svg>
-    </div>
-  </div>
-  <a class="hero-scroll" href="#article">Drop the needle, start reading</a>
-</header>
+  <ul class="pages">
+    <li>
+      <a href="bird-with-strings/">
+        <h2>Bird With Strings</h2>
+        <p class="desc">Charlie Parker's <em>Bird On Verve, Volume 3 (With Strings)</em></p>
+      </a>
+    </li>
+    <li>
+      <a href="clara-fanny-stereo/">
+        <h2>Left Channel, Right Channel</h2>
+        <p class="desc">Piano trios by Clara Schumann and Fanny Mendelssohn, played by the Dartington Piano Trio</p>
+      </a>
+    </li>
+  </ul>
 
-<div class="layout">
-  <aside class="rail" aria-label="Reading progress">
-    <div class="deck">
-      <div class="deck-stage" aria-hidden="true" data-turntable data-scroll-driven>
-        <div class="record">
-          <div class="label">
-            <svg viewBox="0 0 200 200"><defs><path id="arcTop2" d="M30,100 a70,70 0 0,1 140,0"/></defs>
-              <text font-family="Gloock, serif" font-size="20" fill="#1B2238"><textPath href="#arcTop2" startOffset="50%" text-anchor="middle">Bird On Verve</textPath></text>
-              <text x="100" y="136" font-family="Gloock, serif" font-size="15" fill="#A8382B" text-anchor="middle">Vol. 3</text></svg>
-          </div>
-          <div class="spindle"></div>
-        </div>
-        <div class="tonearm" data-arm>
-          <svg viewBox="0 0 300 300"><g fill="none" stroke="#1B2238" stroke-width="7" stroke-linecap="round"><path d="M258 36 L240 190 L190 262"/></g><circle cx="258" cy="36" r="26" fill="#55688A"/><circle cx="258" cy="36" r="10" fill="#DDE3D4"/><rect x="170" y="252" width="34" height="22" rx="3" transform="rotate(-38 187 263)" fill="#A8382B"/></svg>
-        </div>
-      </div>
-      <p class="deck-now" aria-live="polite"><b data-now-title>At a glance</b><span data-now-sub>Needle on the lead-in groove</span></p>
-      <nav aria-label="Sections">
-        <ol>
-          <li><a href="#glance">At a glance</a></li>
-          <li><a href="#hook">The hook</a></li>
-          <li><a href="#music">The music</a></li>
-          <li><a href="#world">Parker's world</a></li>
-          <li><a href="#performers">The performers</a></li>
-          <li><a href="#recording">The recording</a></li>
-          <li><a href="#matters">Why it matters</a></li>
-          <li><a href="#listen">How to listen</a></li>
-          <li><a href="#next">If you like this</a></li>
-          <li><a href="#deeper">Go deeper</a></li>
-          <li><a href="#sources">Sources</a></li>
-        </ol>
-      </nav>
-    </div>
-  </aside>
-
-  <main id="article">
-    <div class="mobile-intro">
-      <p class="lead">Bebop's most radical musician, playing love songs over violins, a harp and a French horn, because he wanted to. A deep dive into one $20 record and the summer of 1950.</p>
-      <p class="credit"><strong>Charlie Parker</strong>, Bird On Verve, Volume 3 (With Strings). Verve 817 444-1, 1984 reissue of sessions from June 6 and July 5, 1950.</p>
-    </div>
-
-    <section id="glance" data-title="At a glance" data-sub="Catalog 817 444-1">
-      <h2>The recording at a glance</h2>
-      <p class="lead">Your copy is the 1984 PolyGram-era reissue <em>Bird On Verve, Volume 3 (With Strings)</em>, catalog 817 444-1, part of a numbered series that reissued Parker's Granz recordings. Its eight string tracks come from one afternoon: July 5, 1950, in New York. The cover is David Stone Martin's "two birds" drawing from the original 1950 Mercury release of the same session.</p>
-      <table class="glance">
-        <tbody>
-          <tr><th scope="row">Title</th><td>Bird On Verve, Volume 3 (With Strings); cover reads "Charlie Parker With Strings, Volume 3, supervised by Norman Granz"</td></tr>
-          <tr><th scope="row">Main performer</th><td>Charlie Parker, alto saxophone</td></tr>
-          <tr><th scope="row">Arranger and conductor</th><td>Joe Lipman (also spelled Lippman), strings tracks</td></tr>
-          <tr><th scope="row">Strings session players</th><td>Bernie Leighton (piano), Ray Brown (bass), Buddy Rich (drums), Edwin "Eddie" Brown (oboe), Joseph Singer (French horn), Verlye Mills (harp), Sam Caplan (concertmaster), Howard Kay, Harry Melnikoff, Sam Rand, Zelly Smirnoff (violins), Isadore Zir (viola), Maurice Brown (cello)</td></tr>
-          <tr><th scope="row">Bonus quintet tracks</th><td>"Relaxin' With Lee" (two versions): Parker, Dizzy Gillespie (trumpet), Thelonious Monk (piano), Curly Russell (bass), Buddy Rich (drums)</td></tr>
-          <tr><th scope="row">Label and catalog</th><td>Verve Records 817 444-1 (PolyGram)</td></tr>
-          <tr><th scope="row">Recorded</th><td>Strings: July 5, 1950, New York City. Quintet: June 6, 1950, New York City</td></tr>
-          <tr><th scope="row">Producer</th><td>Norman Granz</td></tr>
-          <tr><th scope="row">Original release</th><td>10-inch LP <em>Charlie Parker With Strings</em> (the second one), Mercury MG C-509, later MG C-109</td></tr>
-          <tr><th scope="row">This copy</th><td>12-inch LP, mono, 1984 reissue (Discogs lists it as a French pressing; other countries may share the number)</td></tr>
-          <tr><th scope="row">Program</th><td>10 tracks, roughly 31 minutes</td></tr>
-        </tbody>
-      </table>
-      <p class="note">Open question: the issued master of "Relaxin' With Lee" runs about 2:47, and neither timing on this LP (3:54 and 2:08) matches it. These are most likely alternate or spliced-together takes from the same date; your back cover or label should say which.</p>
-    </section>
-
-    <section id="hook" data-title="The hook" data-sub="Two faces of Bird">
-      <h2>The hook</h2>
-      <p class="lead">This record catches bebop's most radical musician doing the thing his fans least expected: playing love songs over violins, a harp and a French horn, because he wanted to.</p>
-      <p>Parker's interest in recording with strings dated back to 1941, and when he signed with Norman Granz he asked for it. The first strings session (November 1949) produced "Just Friends," the biggest-selling record of his life. This LP is the sequel, cut seven months later with a new arranger, Joe Lipman, whom Parker preferred.</p>
-      <p>The twist on side A is the two takes of "Relaxin' With Lee," recorded just four weeks earlier. That June 6, 1950 date was Parker and Dizzy Gillespie's last studio session together and Parker's only studio meeting with Thelonious Monk. So one side of this $20 record holds both faces of Bird in the summer of 1950: the bebop architect with his oldest ally, and the would-be concert artist who told Nat Hentoff that Bartók had become his favorite composer.</p>
-      <p class="pull">Critics called the strings a sellout. Parker answered that he was looking for new ways of saying things musically.</p>
-    </section>
-
-    <section id="music" data-title="The music" data-sub="Ten tracks, two sides">
-      <h2>The music</h2>
-      <p>Nine of the ten tracks are Broadway and Hollywood songs from 1931 to 1944, the "Great American Songbook" (the shared stock of popular songs jazz players use as raw material). According to Lipman, Parker picked every song himself. Almost all follow the standard 32-bar song form: four 8-bar sections, usually AABA (a tune, the tune again, a contrasting "bridge," the tune once more). Each track is about three minutes because each was cut to fit one side of a 10-inch 78 rpm disc.</p>
-      <p>Open any track for its story and what to listen for.</p>
-
-      <p class="side">Side A</p>
-      <ol class="tracks">
-        <li class="track quintet" data-track="Relaxin' With Lee">
-          <button aria-expanded="false"><span class="t-pos">A1</span><span><span class="t-name">Relaxin' With Lee</span><span class="t-meta">Parker, 1950. Quintet with Gillespie and Monk</span></span><span class="t-time">3:54</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>A Parker original from the June 6, 1950 quintet date, taken at a relaxed medium tempo next to the session's faster burners like "Bloomdido" and "Leap Frog." Bop players often wrote new melodies over the chords of older songs (called a "contrafact"); jazz discussion forums say this one sits on the chords of the 1934 swing hit "Stompin' at the Savoy," though I could not confirm that in a primary source. It is the only small-group bebop on the record, and it lets you hear how much tighter and more spare Parker sounds with a pianist like Monk than with a string section.</p></div>
-            <div><h4>Listen for</h4><p>Parker and Gillespie play the opening theme in unison, then trade solos. Strain to hear Monk under them: his chords are sparse, oddly placed jabs instead of a steady comp (accompaniment pattern). Two versions back to back let you hear that Parker never plays a solo the same way twice.</p></div>
-          </div></div></div>
-        </li>
-        <li class="track quintet" data-track="Relaxin' With Lee">
-          <button aria-expanded="false"><span class="t-pos">A2</span><span><span class="t-name">Relaxin' With Lee</span><span class="t-meta">Second version from the same date</span></span><span class="t-time">2:08</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>The second of the two versions on this LP. Neither timing matches the issued master (about 2:47), so these are most likely alternate or edited takes from June 6, 1950.</p></div>
-            <div><h4>Listen for</h4><p>Compare it phrase by phrase with A1. The tune is the same; Parker's solo is not.</p></div>
-          </div></div></div>
-        </li>
-        <li class="track" data-track="Dancing in the Dark">
-          <button aria-expanded="false"><span class="t-pos">A3</span><span><span class="t-name">Dancing in the Dark</span><span class="t-meta">Schwartz and Dietz, 1931</span></span><span class="t-time">3:10</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>Written for the Broadway revue <em>The Band Wagon</em>, it is a brooding minor-tinged ballad about two people moving through uncertainty together. Lipman frames it with lush string pads, and Parker states the melody almost straight before slipping into his own lines.</p></div>
-            <div><h4>Listen for</h4><p>Notice how close Parker stays to the written melody at first. That is the strings-era Bird: decorating rather than demolishing.</p></div>
-          </div></div></div>
-        </li>
-        <li class="track" data-track="Out of Nowhere">
-          <button aria-expanded="false"><span class="t-pos">A4</span><span><span class="t-name">(You Came Along From) Out of Nowhere</span><span class="t-meta">Green and Heyman, 1931</span></span><span class="t-time">3:02</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>A Bing Crosby hit and a jam-session favorite. Its chords move in a way improvisers love, sliding between keys a third apart, which is why so many bop tunes borrow them. Parker plays it with a light, conversational swing.</p></div>
-            <div><h4>Listen for</h4><p>The fastest-feeling ballad here. Listen for the moment the harmony jumps to an unexpected key early in each section; that jump is why jazz players love this tune.</p></div>
-          </div></div></div>
-        </li>
-        <li class="track" data-track="Laura">
-          <button aria-expanded="false"><span class="t-pos">A5</span><span><span class="t-name">Laura</span><span class="t-meta">Raksin, 1944. The deepest track here</span></span><span class="t-time">2:55</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>David Raksin wrote it as the theme for Otto Preminger's 1944 film noir <em>Laura</em>; Johnny Mercer added lyrics after the film's success. The melody never settles where you expect: it keeps moving through a chain of chords that step down by key (a "cycle of fifths" pattern) before it finally lands home, which gives it its haunted, searching quality. Parker plays it close to the melody, at under three minutes, and the restraint is the point. This track was not on the original U.S. 10-inch LP; it surfaced later, which is part of why reissues like yours matter.</p></div>
-            <div><h4>Listen for</h4><p>The highlight for slow, intense listening. The melody seems to keep reaching for a resting place and not finding it. Parker's long, held notes at phrase ends show off his tone more than anything else on the record.</p></div>
-          </div></div></div>
-        </li>
-      </ol>
-
-      <p class="side">Side B</p>
-      <ol class="tracks">
-        <li class="track" data-track="East of the Sun">
-          <button aria-expanded="false"><span class="t-pos">B1</span><span><span class="t-name">East of the Sun (and West of the Moon)</span><span class="t-meta">Bowman, 1934</span></span><span class="t-time">3:35</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>Written by Brooks Bowman, a Princeton student, for a campus musical show. It is a gentle, dreamy tune; Lipman's oboe and harp give it a fairy-tale glow that suits the title.</p></div>
-            <div><h4>Listen for</h4><p>Track the oboe and harp. Lipman uses them like a second voice answering Parker between phrases.</p></div>
-          </div></div></div>
-        </li>
-        <li class="track" data-track="They Can't Take That Away From Me">
-          <button aria-expanded="false"><span class="t-pos">B2</span><span><span class="t-name">They Can't Take That Away From Me</span><span class="t-meta">George and Ira Gershwin, 1937</span></span><span class="t-time">3:15</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>One of George Gershwin's last songs, written for the Fred Astaire and Ginger Rogers film <em>Shall We Dance</em>. It is a love song about memory: you can lose the person, but not the way they hold a knife or sing off key. Parker swings this one harder than the others, and Bernie Leighton gets more of a role at the piano.</p></div>
-            <div><h4>Listen for</h4><p>The swingiest track. Listen for the piano getting more room, and for Parker's lines speeding up into double-time (twice as many notes per beat) for a few bars before relaxing.</p></div>
-          </div></div></div>
-        </li>
-        <li class="track" data-track="Easy to Love">
-          <button aria-expanded="false"><span class="t-pos">B3</span><span><span class="t-name">Easy to Love</span><span class="t-meta">Porter, 1936</span></span><span class="t-time">3:27</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>Cole Porter's ballad from the film <em>Born to Dance</em>, sung there by Jimmy Stewart. Its melody has long, arching phrases that reward a saxophonist's breath control. Parker floats on top of it.</p></div>
-            <div><h4>Listen for</h4><p>Listen to the long Porter phrases and how Parker breathes across them without breaking the line.</p></div>
-          </div></div></div>
-        </li>
-        <li class="track" data-track="I'm in the Mood for Love">
-          <button aria-expanded="false"><span class="t-pos">B4</span><span><span class="t-name">I'm in the Mood for Love</span><span class="t-meta">McHugh and Fields, 1935</span></span><span class="t-time">3:31</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>Introduced in the 1935 film <em>Every Night at Eight</em>. It is probably the most familiar melody on the record, and you can hear Parker enjoying playing with it, bending the phrasing while keeping it recognizable.</p></div>
-            <div><h4>Listen for</h4><p>The tune you already know, so focus on how Parker shifts its rhythm: notes slightly early or late, phrases chopped or stretched, while the melody stays recognizable.</p></div>
-          </div></div></div>
-        </li>
-        <li class="track" data-track="I'll Remember April">
-          <button aria-expanded="false"><span class="t-pos">B5</span><span><span class="t-name">I'll Remember April</span><span class="t-meta">de Paul, Raye and Johnston, 1941</span></span><span class="t-time">3:00</span><span class="t-icon" aria-hidden="true"></span></button>
-          <div class="t-body"><div class="t-inner"><div class="t-cols">
-            <div><h4>The story</h4><p>First heard in the 1942 Abbott and Costello film <em>Ride 'Em Cowboy</em>, it became a bebop staple because its chords shift key abruptly between sections. It closes the record on an up-tempo note, with Parker ending on a lift rather than a sigh.</p></div>
-            <div><h4>Listen for</h4><p>Up-tempo closer. Listen for the sections where the key changes; Parker glides across them without a seam.</p></div>
-          </div></div></div>
-        </li>
-      </ol>
-    </section>
-
-    <section id="world" data-title="Parker's world" data-sub="Summer 1950 to March 1955">
-      <h2>The composer and his world</h2>
-      <p class="lead">The "composer" that matters here is Parker himself, since jazz treats the improviser as the author. In summer 1950 he was at the top of his fame and near the start of his collapse. Five years later he was dead at 34.</p>
-      <ol class="trail" aria-label="Parker timeline">
-        <li><time>1920</time><span>Born in Kansas City.</span></li>
-        <li><time>1941</time><span>His interest in recording with strings begins.</span></li>
-        <li><time>1949</time><span>Signs with Granz. First strings session, November 30. Birdland opens in his honor that December, with Parker on opening night.</span></li>
-        <li class="here"><time>1950</time><span>June 6: last studio date with Gillespie, only one with Monk. July 5: this strings session. Strings concerts at Birdland, the Apollo and Carnegie Hall.</span></li>
-        <li><time>1951</time><span>Loses his New York cabaret card after a narcotics arrest.</span></li>
-        <li><time>1954</time><span>Two suicide attempts; admitted to Bellevue.</span></li>
-        <li><time>1955</time><span>Last gig at Birdland, March 5. Dies March 12.</span></li>
-      </ol>
-      <p><strong>Where Parker was.</strong> Born in Kansas City in 1920, he had spent the mid-1940s building bebop with Dizzy Gillespie, a fast, harmonically dense style that turned jazz from dance music into listening music. In late 1949 a Broadway club opened named Birdland in his honor, and he played opening night. He toured Europe in 1949 and 1950, signed with Granz, and in 1950 began living with Chan Richardson. These strings dates were his bid for a broader audience and for respect as a serious artist.</p>
-      <p><strong>What came next.</strong> Within months the slide began. A narcotics arrest cost him his New York "cabaret card," the police permit then required to play in the city's clubs (sources date the revocation to 1951). Unable to work in his own namesake club, he toured outside the city, sank into debt, attempted suicide twice in 1954, and played his last gig at Birdland on March 5, 1955. He died a week later, on March 12, in Baroness Nica de Koenigswarter's suite at the Stanhope Hotel.</p>
-      <p><strong>The currents of the time.</strong> In 1950 the record business was mid-revolution: 78s were giving way to the long-playing record, and magnetic tape had just replaced direct-to-disc recording. Pop music was dominated by lush orchestral ballads, and Billie Holiday had already shown in 1944 that strings could take a jazz voice to a wider audience. Meanwhile jazz critics were fiercely protective of bebop as an art music, which is why strings drew cries of "commercial."</p>
-      <p><strong>The songwriters.</strong> The tunes come from the golden age of Tin Pan Alley, Broadway and Hollywood: George and Ira Gershwin, Cole Porter, Jimmy McHugh and Dorothy Fields, Arthur Schwartz and Howard Dietz, Johnny Green, and the film composer David Raksin. These were the pop hits of Parker's youth, and bebop players knew their chord changes cold. Earlier independent labels had avoided recording standards because of royalty costs; Granz's backing let Parker finally play the songs he loved.</p>
-    </section>
-
-    <section id="performers" data-title="The performers" data-sub="Bebop meets the studio elite">
-      <h2>The performers</h2>
-      <p class="lead">Parker is the star, but the record's character comes from pairing a bebop soloist with New York's top commercial studio musicians.</p>
-
-      <div class="stage-wrap">
-        <div class="stage-head">
-          <h3>Who was in the room</h3>
-          <div class="seg" role="group" aria-label="Choose a session">
-            <button type="button" aria-pressed="true" data-session="strings">July 5, strings</button>
-            <button type="button" aria-pressed="false" data-session="quintet">June 6, quintet</button>
-          </div>
-        </div>
-        <div class="stage" data-stage></div>
-        <p class="stage-cap" aria-live="polite" data-stage-cap>Pick anyone on the stage to see who they are.</p>
-        <ul class="legend">
-          <li style="--c:#A8382B">Soloist</li><li style="--c:#D6A12E">Strings and harp</li><li style="--c:#55688A">Winds and conductor</li><li style="--c:#DDE3D4;">Rhythm section and trumpet</li>
-        </ul>
-        <p class="caveat">Positions are illustrative; the session's real seating is not documented.</p>
-      </div>
-      <div class="people">
-        <div class="person"><h3>Charlie "Bird" Parker</h3><p>Alto saxophone. The most influential saxophonist in jazz, known for blinding speed, a piercing, unvibrato'd tone, and the ability to hear a dozen ways through every chord. On the strings records his solos are shorter and more melodic than on his small-group sides. One jazz historian argues that after "Just Friends" someone asked him to stick closer to the melody, and he obliged; that is very audible here.</p></div>
-        <div class="person"><h3>Joe Lipman</h3><p>Arranger and conductor. He started at 19 as pianist in Benny Goodman's orchestra and arranged for Goodman, Bunny Berigan (including Berigan's famous "I Can't Get Started"), Jimmy Dorsey, Sarah Vaughan and Billy Eckstine. Parker did not care much for the first arranger, Jimmy Carroll, and preferred Lipman for later dates; Lipman said Parker was easy to work with. Lipman also arranged the third strings session in January 1952. Analysts hear the 1950 date as closer to an orchestral record with a jazz soloist, where 1949 sounded more like a jazz group with strings added.</p></div>
-        <div class="person"><h3>The rhythm section</h3><p>Ray Brown was then the bassist of choice for Granz and soon the anchor of Oscar Peterson's trio; his walking lines are the floor everything stands on. Buddy Rich, the explosive big-band drummer, keeps unusually quiet here, serving the ballads. Bernie Leighton was one of the busiest studio pianists in New York, rarely heard as a soloist.</p></div>
-        <div class="person"><h3>The strings</h3><p>Five violins, a viola, a cello, harp, oboe and French horn, all classically trained session players led by concertmaster Sam Caplan. The oboe (Edwin Brown) and French horn (Joseph Singer) give Lipman's charts their color beyond plain violins.</p></div>
-        <div class="person"><h3>On "Relaxin' With Lee"</h3><p>Dizzy Gillespie co-invented bebop with Parker; this June 1950 date was their last studio session together. Thelonious Monk, bebop's great eccentric, was Parker's choice at piano, but reviewers note he is buried in the mix and gets little solo space. Curly Russell on bass and Buddy Rich again on drums complete the quintet.</p></div>
-      </div>
-    </section>
-
-    <section id="recording" data-title="The recording" data-sub="Mono tape, 1950; vinyl, 1984">
-      <h2>The recording itself</h2>
-      <p class="lead">Your LP is a 1984 reissue of mono tapes from 1950, wearing the logo of a label that did not exist until 1956.</p>
-      <p><strong>The label trail.</strong> Norman Granz, the impresario behind the Jazz at the Philharmonic concerts, ran his Clef label in 1950 as an imprint pressed and distributed by Mercury Records; that is why these sessions first appeared on Mercury. Mitch Miller, then Mercury's head of A&amp;R (artists and repertoire), helped organize the first strings date. Clef went independent in 1953, and in 1956 Granz folded Clef and Norgran into a new label, Verve. He sold Verve to MGM in 1960; MGM sold its record labels to Polydor in 1972, which brought Verve into PolyGram. By the 1980s PolyGram was mining the catalog with series like this one.</p>
-      <p><strong>The release history.</strong> The July 1950 session first came out as a set of 78s and a 10-inch LP, Mercury MG C-509 (later MG C-109), which left off "Dancing in the Dark" and "Laura." In 1955 Clef combined both strings albums on one 12-inch LP (MG C-675), reissued by Verve in 1957 as <em>April in Paris: The Genius of Charlie Parker #2</em>. Your <em>Bird On Verve</em> series was a 1984 run of numbered LPs (Volume 2, 817 443-1, is <em>Bird and Diz</em>; Volume 7 is 817 448-1). Verve's 1995 CD <em>Charlie Parker with Strings: The Master Takes</em> later gathered all the strings masters.</p>
-      <p><strong>The technology.</strong> The session was recorded in mono, early in the tape era. Each tune was built to fit one 78 rpm side, roughly three minutes. "Hi-Fi" on your cover is period branding the 1984 sleeve reproduces from 1950s Verve LPs, not a technical claim about this pressing. Expect a narrow but warm mono image: Parker front and center, strings blended behind him.</p>
-      <p><strong>The cover.</strong> The art is by David Stone Martin (1913-1992), whose signature is at bottom right. He was Granz's longtime friend and in-house illustrator, designed the Jazz at the Philharmonic "trumpeter" logo, and drew more than 400 album covers, often in line art plus one or two flat colors, exactly as here. A collector's note: neither original strings 10-inch LP said "#2" on its cover, and the one with the two birds is the second. Your Volume 3 sleeve is that second cover.</p>
-    </section>
-
-    <section id="matters" data-title="Why it matters" data-sub="Grammy Hall of Fame, 1988">
-      <h2>Why it matters</h2>
-      <p class="lead">The strings records were Parker's best sellers in his lifetime, were largely condemned by jazz purists, and were inducted into the Grammy Hall of Fame in 1988.</p>
-      <p><strong>Then.</strong> Fans and critics accused Bird of going commercial. Parker pushed back that he was looking for new ways of saying things musically, and the evidence supports him: he initiated the project, chose the songs, took the string group on the road (Birdland and the Apollo in August 1950, Carnegie Hall that September, more dates through 1952), and reportedly played "Just Friends" for the doctor attending him in his final days.</p>
-      <p><strong>Now.</strong> Critical opinion has softened into a split verdict. Most agree that Parker's playing is gorgeous and that the 1949 "Just Friends" is the peak, while the charts can sound stiff or sweet next to his small-group sides. Jazz Lines Publications has since published the original Carroll and Lipman scores from the session parts, and saxophonist Aaron Johnson staged a historically accurate recreation in New York in 2014.</p>
-      <p><strong>Compared with other versions.</strong> This session competes mainly with its own sibling: the 1949 Carroll date ("Just Friends," "April in Paris," "Summertime") is the more famous and arguably more inspired. The live <em>Midnight Jazz at Carnegie Hall</em> (September 1950) shows the same ensemble with more fire.</p>
-      <p><strong>Footprint.</strong> The concept launched a whole genre: <em>Clifford Brown with Strings</em> (1955) and Stan Getz's <em>Focus</em> (1961) both follow the template. And the album's David Stone Martin covers remain some of the most reproduced images in jazz design.</p>
-    </section>
-
-    <section id="listen" data-title="How to listen" data-sub="Side B first, then side A">
-      <h2>How to listen</h2>
-      <p class="lead">Play side B first, then side A: side B is pure strings session, and hearing "Relaxin' With Lee" after it makes the contrast hit harder.</p>
-      <p>On every ballad, listen for three layers: the string "pad" (sustained chords), the rhythm section underneath (Ray Brown's bass is the easiest to track), and Parker on top.</p>
-      <p><strong>A general map for each string track.</strong> Most follow the same shape: a short orchestral introduction; Parker plays the melody once through, lightly decorated; a brief solo stretch where he leaves the melody; then the strings or the bridge bring him back to the tune, and a short ending (often a held chord with a harp sweep). Count along in 8-bar chunks and you can find the bridge each time: it is where the harmony suddenly moves somewhere new.</p>
-      <p>Track-by-track notes live in the tracklist under <a href="#music">The music</a>; open any song and read "Listen for."</p>
-      <div class="howto">
-        <h3>Piano connections</h3>
-        <p>These songs use the same building blocks you are practicing in Alfred's. The "dominant seventh" chord you have been fingering (D7, for example) is the engine of every one of these tunes, pulling toward the next chord. The AABA form is a longer cousin of the repeated-section pieces in your method book.</p>
-        <p>"Relaxin' With Lee" is not a 12-bar blues like "Got Those Blues!", but the bebop way of playing over it uses the same swing feel. And the chain of chords stepping down in "Laura" is related to the repeating chord pattern you are hearing in Canon in D, where the bass keeps walking down and the harmony follows.</p>
-      </div>
-    </section>
-
-    <section id="next" data-title="If you like this" data-sub="Five next listens">
-      <h2>If you like this</h2>
-      <ul class="recs">
-        <li><b>The 1949 Charlie Parker With Strings (Jimmy Carroll, arr.)</b>The first session, with "Just Friends," "April in Paris" and "Summertime"; the essential companion and the more celebrated half.</li>
-        <li><b>Bird and Diz (Verve)</b>The full June 6, 1950 quintet session that "Relaxin' With Lee" comes from, with Gillespie and Monk; this series issued it as Bird On Verve Vol. 2.</li>
-        <li><b>Charlie Parker With Strings: Midnight Jazz at Carnegie Hall</b>The string group live in September 1950, looser and more daring than the studio takes.</li>
-        <li><b>Clifford Brown with Strings (1955)</b>The most famous record built on Parker's template, with a trumpeter of luminous tone.</li>
-        <li><b>Stan Getz, Focus (1961)</b>Takes the idea further: Eddie Sauter wrote original string pieces and left Getz to improvise over them.</li>
-      </ul>
-    </section>
-
-    <section id="deeper" data-title="Go deeper" data-sub="Watch, read, keep going">
-      <h2>Go deeper</h2>
-      <p class="lead">Start with the 1952 TV clip and the Giddins documentary, then read Haddix or Crouch for the life and Owens for the music.</p>
-      <div class="tabs" role="tablist" aria-label="Recommendations">
-        <button role="tab" id="tab-watch" aria-controls="p-watch" aria-selected="true">Watch</button>
-        <button role="tab" id="tab-books" aria-controls="p-books" aria-selected="false" tabindex="-1">Books</button>
-        <button role="tab" id="tab-articles" aria-controls="p-articles" aria-selected="false" tabindex="-1">Articles</button>
-      </div>
-      <div class="panel" id="p-watch" role="tabpanel" aria-labelledby="tab-watch">
-        <ul class="links">
-          <li><a href="https://www.youtube.com/watch?v=mUED5Ol9GwM" target="_blank" rel="noopener"><span><span class="l-title">Celebrating Bird: The Triumph of Charlie Parker</span><span class="l-why">Gary Giddins's documentary, the best film on Parker, with interviews from people who played with him.</span></span><span class="l-src">YouTube</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=4PiKHAEcEvM" target="_blank" rel="noopener"><span><span class="l-title">"Hot House," DuMont Television, February 24, 1952</span><span class="l-why">One of the only sound films of Parker playing; you see the partnership from "Relaxin' With Lee" in motion.</span></span><span class="l-src">YouTube</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=R17thbPkUu8" target="_blank" rel="noopener"><span><span class="l-title">Relaxing With Lee (master take)</span><span class="l-why">The issued take, to compare with the two versions on your LP.</span></span><span class="l-src">YouTube</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=b_lnoGf2mfg" target="_blank" rel="noopener"><span><span class="l-title">Laura</span><span class="l-why">The July 1950 Lipman track, handy when you want it without flipping the record.</span></span><span class="l-src">YouTube</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=iixDzXO3V6A" target="_blank" rel="noopener"><span><span class="l-title">Just Friends</span><span class="l-why">The 1949 hit from the first strings session; play it right after side B to hear Carroll's charts against Lipman's.</span></span><span class="l-src">YouTube</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=SCerNb5S7yE" target="_blank" rel="noopener"><span><span class="l-title">"I Knew the Real Charlie Parker," Sonny Rollins</span><span class="l-why">A saxophone giant who knew Bird personally, on the man behind the legend.</span></span><span class="l-src">YouTube</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=ORMn8E0k30I" target="_blank" rel="noopener"><span><span class="l-title">Just Friends, Dick Oatts with Strings</span><span class="l-why">A modern live performance of the Carroll arrangement, so you can see how the strings and soloist are laid out on stage.</span></span><span class="l-src">YouTube</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=i-6WSHtxl78" target="_blank" rel="noopener"><span><span class="l-title">32-bar song form AABA (MUSC 262, video 12)</span><span class="l-why">A college-course explainer of the song form every string track on this LP uses.</span></span><span class="l-src">YouTube</span></a></li>
-        </ul>
-        <p class="caveat">For the track uploads, check that the channel name says "Topic" or Verve, which marks an official label upload.</p>
-      </div>
-      <div class="panel" id="p-books" role="tabpanel" aria-labelledby="tab-books" hidden>
-        <ul class="links">
-          <li><a href="https://www.press.uillinois.edu/books/?id=p080890" target="_blank" rel="noopener"><span><span class="l-title">Bird: The Life and Music of Charlie Parker</span><span class="l-why">Chuck Haddix, 2013. The most balanced full biography, by a Kansas City jazz archivist; covers the Granz and strings years.</span></span><span class="l-src">U. of Illinois Press</span></a></li>
-          <li><a href="https://www.powells.com/book/kansas-city-lightning-the-rise-times-of-charlie-parker-9780062005618" target="_blank" rel="noopener"><span><span class="l-title">Kansas City Lightning: The Rise and Times of Charlie Parker</span><span class="l-why">Stanley Crouch, 2013. A vivid, novelistic account of Parker's youth; it stops before 1950, so read it for the roots.</span></span><span class="l-src">Harper</span></a></li>
-          <li><a href="https://muse.jhu.edu/books/9781452940786" target="_blank" rel="noopener"><span><span class="l-title">Celebrating Bird: The Triumph of Charlie Parker</span><span class="l-why">Gary Giddins, 1987; 2013 edition. A short, beautifully written critical portrait that pairs with the film.</span></span><span class="l-src">U. of Minnesota Press</span></a></li>
-          <li><a href="https://blackwells.co.uk/bookshop/product/Norman-Granz-by-Tad-Hershorn/9780520267824" target="_blank" rel="noopener"><span><span class="l-title">Norman Granz: The Man Who Used Jazz for Justice</span><span class="l-why">Tad Hershorn, 2011. The producer who made these sessions happen, and the story of Clef and Verve.</span></span><span class="l-src">U. of California Press</span></a></li>
-          <li><a href="https://academic.oup.com/book/2103" target="_blank" rel="noopener"><span><span class="l-title">Bebop: The Music and Its Players</span><span class="l-why">Thomas Owens, 1995. The standard musical study of bebop, with analysis of Parker's style; a good step up as your theory grows.</span></span><span class="l-src">Oxford U. Press</span></a></li>
-        </ul>
-      </div>
-      <div class="panel" id="p-articles" role="tabpanel" aria-labelledby="tab-articles" hidden>
-        <ul class="links">
-          <li><a href="https://www.npr.org/2020/08/26/906334474/bird-lives-a-charlie-parker-centennial-with-strings-attached" target="_blank" rel="noopener"><span><span class="l-title">Bird Lives! A Charlie Parker Centennial, With Strings Attached</span><span class="l-why">Jazz Night in America's centennial feature on the strings project and its modern revivals.</span></span><span class="l-src">NPR, 2020</span></a></li>
-          <li><a href="https://jazzhistoryonline.com/bird-with-strings/" target="_blank" rel="noopener"><span><span class="l-title">Charlie Parker with Strings (Deluxe Edition)</span><span class="l-why">A detailed take-by-take review arguing what worked and what did not in the sessions.</span></span><span class="l-src">Jazz History Online</span></a></li>
-          <li><a href="https://jazzjournal.co.uk/2020/12/31/charlie-parker-with-strings/" target="_blank" rel="noopener"><span><span class="l-title">Charlie Parker: With Strings</span><span class="l-why">A British jazz magazine's reappraisal of the strings recordings.</span></span><span class="l-src">Jazz Journal, 2020</span></a></li>
-          <li><a href="https://ideals.illinois.edu/items/77089" target="_blank" rel="noopener"><span><span class="l-title">Charlie Parker With Strings: A Comparative Study of Recordings from 1947 through 1950</span><span class="l-why">An academic study comparing the strings recordings; deep but rewarding.</span></span><span class="l-src">U. of Illinois IDEALS</span></a></li>
-          <li><a href="https://www.nybooks.com/articles/2013/11/07/bird/" target="_blank" rel="noopener"><span><span class="l-title">Bird</span><span class="l-why">A long-form essay on Parker's life and art, prompted by the 2013 biographies.</span></span><span class="l-src">NY Review of Books, 2013</span></a></li>
-          <li><a href="https://themillions.com/?p=63797" target="_blank" rel="noopener"><span><span class="l-title">Bird Lives: On Stanley Crouch's Kansas City Lightning</span><span class="l-why">A thoughtful review that doubles as an introduction to Crouch's book.</span></span><span class="l-src">The Millions</span></a></li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="sources" data-title="Sources" data-sub="Run-out groove">
-      <h2>Sources</h2>
-      <p>Song-origin details (shows, films, years) for the standards are from general reference knowledge and were not individually re-checked.</p>
-      <ul class="sources">
-        <li><a href="https://www.discogs.com/release/4305831-Charlie-Parker-Bird-On-Verve-Volume-3-With-Strings">Discogs: Bird On Verve, Volume 3 (With Strings), Verve 817 444-1</a></li>
-        <li><a href="https://uk.rarevinyl.com/products/charlie-parker-bird-and-diz-bird-on-verve-vol-2-french-vinyl-lp-album-record-817443-1-588095">RareVinyl: Bird On Verve Vol. 2, 817 443-1</a></li>
-        <li><a href="https://en.wikipedia.org/wiki/Charlie_Parker_with_Strings">Wikipedia: Charlie Parker with Strings</a></li>
-        <li><a href="https://en.wikipedia.org/wiki/Charlie_Parker_discography">Wikipedia: Charlie Parker discography</a></li>
-        <li><a href="https://en.wikipedia.org/wiki/Bird_and_Diz">Wikipedia: Bird and Diz</a></li>
-        <li><a href="https://en.wikipedia.org/wiki/Verve_Records">Wikipedia: Verve Records</a></li>
-        <li><a href="https://en.wikipedia.org/wiki/David_Stone_Martin">Wikipedia: David Stone Martin</a></li>
-        <li><a href="https://www.ejazzlines.com/wp-files/2/im_in_the_mood_for_love_jlp-8029.pdf">Jazz Lines: I'm in the Mood for Love score notes</a></li>
-        <li><a href="https://www.ejazzlines.com/mc_files/2/what_is_this_thing_called_love_jlp-8045.pdf">Jazz Lines: What Is This Thing Called Love score notes</a></li>
-        <li><a href="https://www.ejazzlines.com/wp-files/2/jlp8042.pdf">Jazz Lines: Temptation score notes</a></li>
-        <li><a href="https://www.ejazzlines.com/wp-files/2/jlp8043.pdf">Jazz Lines: They Can't Take That Away From Me score notes</a></li>
-        <li><a href="https://thejazzloft.org/?p=206">The Jazz Loft: Charlie Parker exhibit</a></li>
-        <li><a href="https://jazzhistoryonline.com/bird-with-strings/">Jazz History Online: Bird with Strings</a></li>
-        <li><a href="https://www.allaboutjazz.com/news/lost-bird-with-strings">All About Jazz: Lost Bird with Strings</a></li>
-        <li><a href="https://goatless.org/2025/02/10/charlie-parker-the-mercury-clef-10-inch-lp-collection">goatless.org: The Mercury &amp; Clef 10-inch LP Collection</a></li>
-        <li><a href="https://tower.jp/item/4930642">Tower Records Japan: Bird and Diz</a></li>
-        <li><a href="https://www.louisianamusicfactory.com/?p=65043">Louisiana Music Factory: Bird and Diz</a></li>
-        <li><a href="https://amoeba.com/charlie-parker/artist/128144/bio">Amoeba: Charlie Parker biography (Stuart Kremsky)</a></li>
-        <li><a href="https://jazz.com/encyclopedia/parker-charlie">jazz.com: Charlie Parker</a></li>
-        <li><a href="https://www.udiscovermusic.com/?p=296">uDiscover: A Bird's Life</a></li>
-        <li><a href="https://www.wfae.org/2012-02-06/charlie-parker-bird-lives-part-2">WFAE: Charlie Parker, Bird Lives part 2</a></li>
-        <li><a href="https://www.organissimo.org/forum/topic/85716-serge-chaloff-boston-1950-uptown">Organissimo forum: Relaxin' With Lee and Stompin' at the Savoy</a></li>
-      </ul>
-    </section>
-  </main>
-</div>
-
-
-<div class="mini" data-mini>
-  <div class="mini-progress" aria-hidden="true"><i data-mini-bar></i></div>
-  <div class="mini-rec" aria-hidden="true"><div class="record" data-mini-rec><div class="label"></div><div class="spindle"></div></div></div>
-  <button class="mini-now" type="button" aria-haspopup="dialog" data-sheet-open><b data-mini-title>At a glance</b><span data-mini-sub>Tap for all sections</span></button>
-  <button class="mini-sound" type="button" aria-pressed="false" aria-label="Turn sound on"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button>
-</div>
-<dialog class="sheet" data-sheet aria-label="Sections">
-  <div class="sheet-head"><h2>Sections</h2><button type="button" data-sheet-close>Close</button></div>
-  <nav data-sheet-nav></nav>
-</dialog>
-<footer>
-  <p>A recording deep dive by Greg, October 2026. Written for one copy of Verve 817 444-1, bought for $20.</p>
-  <p>Album artwork and recordings belong to their rights holders; this page links to them rather than reproducing them.</p>
-</footer>
-
-<script>
-(function(){
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ===== Sound: Karplus-Strong plucks + vinyl crackle, only after the person opts in ===== */
-  var ctx = null, soundOn = false, crackleGain = null, cache = {};
-  var btn = document.querySelector('.sound'), lab = btn.querySelector('[data-sound-label]');
-  function initAudio(){
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
-    var sr = ctx.sampleRate, len = sr * 3, b = ctx.createBuffer(1, len, sr), d = b.getChannelData(0), k = 0;
-    for(var i = 0; i < len; i++){
-      d[i] = (Math.random() * 2 - 1) * 0.012;
-      if(Math.random() < 0.00035) k = 0.25 + Math.random() * 0.55;
-      if(k > 0.01){ d[i] += k * (Math.random() > .5 ? 1 : -1); k *= 0.82; }
-    }
-    var src = ctx.createBufferSource(); src.buffer = b; src.loop = true;
-    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 4200;
-    crackleGain = ctx.createGain(); crackleGain.gain.value = 0;
-    src.connect(lp).connect(crackleGain).connect(ctx.destination); src.start();
-  }
-  function pluckBuf(f){
-    if(cache[f]) return cache[f];
-    var sr = ctx.sampleRate, len = Math.floor(sr * 2.6), b = ctx.createBuffer(1, len, sr), d = b.getChannelData(0);
-    var N = Math.round(sr / f), ring = new Float32Array(N);
-    for(var i = 0; i < N; i++) ring[i] = Math.random() * 2 - 1;
-    for(var j = 0; j < len; j++){ var p = j % N; d[j] = ring[p]; ring[p] = 0.4985 * (ring[p] + ring[(p + 1) % N]); }
-    return cache[f] = b;
-  }
-  function pluck(f, vol){
-    if(!soundOn || !ctx) return;
-    var s = ctx.createBufferSource(), g = ctx.createGain();
-    s.buffer = pluckBuf(f); g.gain.value = vol || 0.28;
-    s.connect(g).connect(ctx.destination); s.start();
-  }
-  var miniSound = document.querySelector('.mini-sound');
-  function toggleSound(){
-    if(!ctx) initAudio();
-    soundOn = !soundOn;
-    if(ctx.state === 'suspended') ctx.resume();
-    crackleGain.gain.setTargetAtTime(soundOn ? 0.5 : 0, ctx.currentTime, 0.25);
-    btn.setAttribute('aria-pressed', soundOn); miniSound.setAttribute('aria-pressed', soundOn);
-    lab.textContent = soundOn ? 'Turn sound off' : 'Turn sound on';
-    miniSound.setAttribute('aria-label', lab.textContent);
-    if(soundOn) pluck(146.83, .25);
-  }
-  btn.addEventListener('click', toggleSound); miniSound.addEventListener('click', toggleSound);
-  function buzz(ms){ if(navigator.vibrate) try{ navigator.vibrate(ms); }catch(e){} }
-
-  /* ===== Hero strings, tuned to a D7 chord ===== */
-  var hero = document.querySelector('.hero'), cv = hero.querySelector('.hero-strings'), g2 = cv.getContext('2d');
-  var tuning = [293.66, 261.63, 220.00, 185.00, 146.83]; // D4 C4 A3 F#3 D3
-  var strings = [.16, .33, .5, .67, .84].map(function(y, i){ return {fy:y, amp:0, t0:0, px:0, f:tuning[i]}; });
-  var W = 0, H = 0, dpr = 1, running = false, lastY = null, lastX = 0, dragging = false;
-  function size(){
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = hero.clientWidth; H = hero.clientHeight;
-    cv.width = W * dpr; cv.height = H * dpr; g2.setTransform(dpr, 0, 0, dpr, 0, 0); draw(performance.now());
-  }
-  function draw(now){
-    g2.clearRect(0, 0, W, H);
-    var active = false;
-    strings.forEach(function(s, i){
-      var y = s.fy * H, t = (now - s.t0) / 1000, env = s.amp * Math.exp(-t * 2.6);
-      var heat = Math.min(env / 18, 1);
-      g2.beginPath();
-      g2.lineWidth = 1 + (4 - i) * 0.35 + heat * 1.2;
-      g2.strokeStyle = heat > 0.02 ? 'rgba(214,161,46,' + (0.22 + heat * 0.7) + ')' : 'rgba(221,227,212,.16)';
-      if(env > 0.25){
-        active = true;
-        var osc = reduce ? 1 : Math.sin(t * (22 + i * 5) * Math.PI * 2);
-        for(var x = 0; x <= W; x += 6){
-          var shape = x < s.px ? x / s.px : (W - x) / (W - s.px);
-          var yy = y + env * osc * shape;
-          x === 0 ? g2.moveTo(x, yy) : g2.lineTo(x, yy);
-        }
-      } else { g2.moveTo(0, y); g2.lineTo(W, y); }
-      g2.stroke();
-    });
-    return active;
-  }
-  function loop(now){ running = draw(now); if(running) requestAnimationFrame(loop); }
-  function kick(){ if(!running){ running = true; requestAnimationFrame(loop); } }
-  hero.addEventListener('pointermove', function(e){
-    var r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-    if(lastY !== null && !dragging){
-      strings.forEach(function(s){
-        var sy = s.fy * H;
-        if((lastY - sy) * (y - sy) < 0){
-          var speed = Math.abs(y - lastY) + Math.abs(x - lastX) * .2;
-          s.amp = Math.min(34, 7 + speed * .7); s.t0 = performance.now(); s.px = Math.max(40, Math.min(W - 40, x));
-          pluck(s.f, Math.min(.38, .12 + speed / 120)); buzz(8); kick();
-        }
-      });
-    }
-    lastY = y; lastX = x;
-  });
-  hero.addEventListener('pointerleave', function(){ lastY = null; });
-  /* Touch: a tap plucks the nearest string, a sideways swipe strums them all */
-  hero.addEventListener('pointerdown', function(e){
-    if(e.pointerType === 'mouse' || heroRec.contains(e.target) || e.target.closest('a,button')) return;
-    var r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, best = null, dist = 1e9;
-    strings.forEach(function(s){ var d = Math.abs(s.fy * H - y); if(d < dist){ dist = d; best = s; } });
-    if(best && dist < 70){ best.amp = 26; best.t0 = performance.now(); best.px = Math.max(40, Math.min(W - 40, x)); pluck(best.f, .32); buzz(12); kick(); }
-  });
-  var sx = null;
-  hero.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; }, {passive:true});
-  hero.addEventListener('touchend', function(e){
-    if(sx === null) return; var dx = e.changedTouches[0].clientX - sx; sx = null;
-    if(Math.abs(dx) > 60 && !dragging){
-      strings.forEach(function(s, i){ setTimeout(function(){ s.amp = 22; s.t0 = performance.now(); s.px = W / 2; pluck(s.f, .26); kick(); }, (dx > 0 ? i : 4 - i) * 55); });
-      buzz(30);
-    }
-  }, {passive:true});
-  window.addEventListener('resize', size); size();
-
-  /* ===== Hero record: spins up, drag to scratch, settles back to 33 1/3 ===== */
-  var deck = hero.querySelector('.hero-deck'), heroRec = deck.querySelector('.record'), heroArm = deck.querySelector('[data-arm]');
-  var angle = 0, speed = 0, base = reduce ? 0 : 0.2, last = performance.now(), prevA = 0, prevT = 0, vel = 0;
-  setTimeout(function(){ heroArm.style.transform = 'rotate(4deg)'; }, reduce ? 0 : 500);
-  function ang(e){ var r = heroRec.getBoundingClientRect(); return Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2)) * 180 / Math.PI; }
-  heroRec.addEventListener('pointerdown', function(e){
-    dragging = true; heroRec.classList.add('dragging'); heroRec.setPointerCapture(e.pointerId);
-    prevA = ang(e); prevT = performance.now(); vel = 0;
-    if(crackleGain && soundOn) crackleGain.gain.setTargetAtTime(1.1, ctx.currentTime, .05);
-  });
-  heroRec.addEventListener('pointermove', function(e){
-    if(!dragging) return;
-    var a = ang(e), d = a - prevA; if(d > 180) d -= 360; if(d < -180) d += 360;
-    var t = performance.now(); angle += d; vel = d / Math.max(t - prevT, 1); prevA = a; prevT = t;
-    heroRec.style.transform = 'rotate(' + angle + 'deg)';
-  });
-  function release(){
-    if(!dragging) return; dragging = false; heroRec.classList.remove('dragging'); speed = vel;
-    if(crackleGain && soundOn) crackleGain.gain.setTargetAtTime(.5, ctx.currentTime, .3);
-  }
-  heroRec.addEventListener('pointerup', release); heroRec.addEventListener('pointercancel', release);
-  function spin(t){
-    var dt = Math.min(t - last, 50); last = t;
-    if(!dragging){ speed += (base - speed) * Math.min(dt * 0.0016, 1); angle += speed * dt; heroRec.style.transform = 'rotate(' + angle + 'deg)'; }
-    requestAnimationFrame(spin);
-  }
-  requestAnimationFrame(spin);
-
-  /* ===== Rail turntable follows reading progress ===== */
-  var stage = document.querySelector('[data-scroll-driven]');
-  var rec = stage.querySelector('.record'), arm = stage.querySelector('[data-arm]');
-  var main = document.getElementById('article');
-  var sections = Array.prototype.slice.call(main.querySelectorAll('section'));
-  var sheet = document.querySelector('[data-sheet]');
-  sheet.querySelector('[data-sheet-nav]').innerHTML = document.querySelector('.deck nav').innerHTML;
-  document.querySelector('[data-sheet-open]').addEventListener('click', function(){ if(sheet.showModal) sheet.showModal(); else sheet.setAttribute('open',''); });
-  sheet.querySelector('[data-sheet-close]').addEventListener('click', function(){ sheet.close(); });
-  sheet.addEventListener('click', function(e){ if(e.target === sheet || e.target.closest('a')) sheet.close(); });
-  var navLinks = document.querySelectorAll('.deck nav a, [data-sheet-nav] a');
-  var mini = document.querySelector('[data-mini]'), miniBar = document.querySelector('[data-mini-bar]'), miniRec = document.querySelector('[data-mini-rec]');
-  var miniTitle = document.querySelector('[data-mini-title]'), miniSub = document.querySelector('[data-mini-sub]');
-  function setNow(t, sub){ nowTitle.textContent = t; nowSub.textContent = sub; miniTitle.textContent = t; miniSub.textContent = sub; }
-  var nowTitle = document.querySelector('[data-now-title]'), nowSub = document.querySelector('[data-now-sub]');
-  var current = null;
-  function onScroll(){
-    var r = main.getBoundingClientRect(), total = r.height - window.innerHeight;
-    var p = Math.min(Math.max(-r.top / Math.max(total, 1), 0), 1);
-    if(!reduce){ rec.style.transform = 'rotate(' + (p * 1440) + 'deg)'; miniRec.style.transform = 'rotate(' + (p * 2160) + 'deg)'; }
-    miniBar.style.width = (p * 100) + '%';
-    var on = hero.getBoundingClientRect().bottom < window.innerHeight * .5;
-    mini.classList.toggle('show', on); document.body.classList.toggle('mini-on', on);
-    arm.style.transform = 'rotate(' + (-6 + p * 26) + 'deg)';
-    var mid = window.innerHeight * .35, active = sections[0];
-    sections.forEach(function(s){ if(s.getBoundingClientRect().top < mid) active = s; });
-    if(active !== current){
-      current = active; setNow(active.dataset.title, active.dataset.sub);
-      navLinks.forEach(function(a){ a.setAttribute('aria-current', a.getAttribute('href') === '#' + active.id ? 'true' : 'false'); });
-    }
-  }
-  window.addEventListener('scroll', onScroll, {passive:true}); window.addEventListener('resize', onScroll); onScroll();
-
-  /* ===== Tracklist ===== */
-  document.querySelectorAll('.track > button').forEach(function(b, i){
-    b.addEventListener('click', function(){
-      var li = b.parentElement, open = li.dataset.open === 'true';
-      li.dataset.open = open ? 'false' : 'true'; b.setAttribute('aria-expanded', open ? 'false' : 'true');
-      if(!open){
-        setNow(b.querySelector('.t-name').textContent, 'Now playing, track ' + b.querySelector('.t-pos').textContent);
-        buzz(10);
-        pluck(tuning[4 - (i % 5)], .22);
-      }
-    });
-  });
-
-  /* ===== Who was in the room ===== */
-  var D7 = {strings:[293.66,220,185], winds:[261.63,329.63], rhythm:[146.83,110], lead:[587.33]};
-  var people = [
-    {id:'cp', i:'CP', n:'Charlie Parker', r:'Alto saxophone, both sessions', c:'lead', s:{strings:[50,80], quintet:[42,74]}},
-    {id:'br', i:'BR', n:'Buddy Rich', r:'Drums, both sessions', c:'rhythm', s:{strings:[88,74], quintet:[74,40]}},
-    {id:'jl', i:'JL', n:'Joe Lipman', r:'Arranger and conductor', c:'winds', s:{strings:[50,56]}},
-    {id:'sc', i:'SC', n:'Sam Caplan', r:'Violin, concertmaster', c:'strings', s:{strings:[18,68]}},
-    {id:'hk', i:'HK', n:'Howard Kay', r:'Violin', c:'strings', s:{strings:[13,46]}},
-    {id:'hm', i:'HM', n:'Harry Melnikoff', r:'Violin', c:'strings', s:{strings:[22,27]}},
-    {id:'sr', i:'SR', n:'Sam Rand', r:'Violin', c:'strings', s:{strings:[29,50]}},
-    {id:'zs', i:'ZS', n:'Zelly Smirnoff', r:'Violin', c:'strings', s:{strings:[36,32]}},
-    {id:'iz', i:'IZ', n:'Isadore Zir', r:'Viola', c:'strings', s:{strings:[45,18]}},
-    {id:'mb', i:'MB', n:'Maurice Brown', r:'Cello', c:'strings', s:{strings:[56,18]}},
-    {id:'vm', i:'VM', n:'Verlye Mills', r:'Harp', c:'strings', s:{strings:[87,40]}},
-    {id:'eb', i:'EB', n:'Edwin "Eddie" Brown', r:'Oboe', c:'winds', s:{strings:[66,30]}},
-    {id:'js', i:'JS', n:'Joseph Singer', r:'French horn', c:'winds', s:{strings:[76,20]}},
-    {id:'bl', i:'BL', n:'Bernie Leighton', r:'Piano', c:'rhythm', s:{strings:[70,56]}},
-    {id:'rb', i:'RB', n:'Ray Brown', r:'Bass', c:'rhythm', s:{strings:[80,62]}},
-    {id:'dg', i:'DG', n:'Dizzy Gillespie', r:'Trumpet, June 6 quintet', c:'rhythm', s:{quintet:[58,74]}},
-    {id:'tm', i:'TM', n:'Thelonious Monk', r:'Piano, June 6 quintet', c:'rhythm', s:{quintet:[26,40]}},
-    {id:'cr', i:'CR', n:'Curly Russell', r:'Bass, June 6 quintet', c:'rhythm', s:{quintet:[50,36]}}
-  ];
-  var stageEl = document.querySelector('[data-stage]'), cap = document.querySelector('[data-stage-cap]'), session = 'strings';
-  people.forEach(function(p){
-    var b = document.createElement('button'); b.type = 'button'; b.className = 'seat ' + p.c; b.textContent = p.i;
-    b.setAttribute('aria-label', p.n + ', ' + p.r); p.el = b;
-    function show(){
-      stageEl.querySelectorAll('.seat.on').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
-      cap.innerHTML = '<b>' + p.n + '</b><br>' + p.r;
-    }
-    b.addEventListener('mouseenter', show); b.addEventListener('focus', show);
-    b.addEventListener('click', function(){
-      show(); var notes = D7[p.c]; pluck(notes[Math.floor(Math.random() * notes.length)], .3);
-      b.classList.remove('ping'); void b.offsetWidth; b.classList.add('ping');
-    });
-    stageEl.appendChild(b);
-  });
-  function place(){
-    people.forEach(function(p){
-      var pos = p.s[session];
-      if(pos){ p.el.style.left = pos[0] + '%'; p.el.style.top = pos[1] + '%'; p.el.classList.remove('gone'); p.el.tabIndex = 0; }
-      else { p.el.classList.add('gone'); p.el.tabIndex = -1; }
-    });
-    cap.textContent = session === 'strings' ? 'July 5, 1950: fifteen musicians. Pick anyone to see who they are.' : 'June 6, 1950: five musicians, the last Bird and Diz studio date. Pick anyone to see who they are.';
-  }
-  document.querySelectorAll('[data-session]').forEach(function(b){
-    b.addEventListener('click', function(){
-      session = b.dataset.session;
-      document.querySelectorAll('[data-session]').forEach(function(x){ x.setAttribute('aria-pressed', x === b); });
-      place();
-    });
-  });
-  place();
-
-  /* ===== Tabs ===== */
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role=tab]'));
-  function select(tab){
-    tabs.forEach(function(t){
-      var on = t === tab; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
-      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-    });
-  }
-  tabs.forEach(function(t, i){
-    t.addEventListener('click', function(){ select(t); });
-    t.addEventListener('keydown', function(e){
-      var n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-      if(n){ var nx = tabs[(i + n + tabs.length) % tabs.length]; select(nx); nx.focus(); e.preventDefault(); }
-    });
-  });
-})();
-</script>
+  <footer>
+    <p>A project by <a href="https://github.com/GregBorrelly" target="_blank" rel="noopener">Greg Borrelly</a></p>
+  </footer>
+</main>
 </body>
 </html>

@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Left Channel, Right Channel</title>
+<meta name="description" content="A deep dive into Hyperion KA66331: the piano trios of Clara Schumann and Fanny Mendelssohn, played by the Dartington Piano Trio, built as a stereo cassette deck.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --salon:#123A33; --salon-deep:#0B2823; --paper:#DDE7DA; --paper-hi:#EEF3EA;
+  --ink:#10211D; --ink-soft:#3A4E47; --rule:rgba(16,33,29,.2);
+  --clara:#7A5210; --clara-lit:#E5B553; --fanny:#A92F55; --fanny-lit:#F39AB7;
+  --vu:#F4C95D; --oxide:#3B2418; --shell:#E6E2D3; --ivory:#F4EFE1;
+  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --text:"Newsreader",Georgia,serif;
+  --bl:.5; --br:.5; --measure:38rem; --cols:1fr 1fr;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.14rem/1.6 var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-underline-offset:.17em;text-decoration-thickness:1px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--vu);outline-offset:3px;border-radius:3px}
+main :focus-visible{outline-color:var(--fanny)}
+.dark :focus-visible{outline-color:var(--vu)}
+.skip{position:absolute;left:-999px;top:0;z-index:60;background:var(--ink);color:var(--paper);padding:.6rem 1rem}
+.skip:focus{left:1rem;top:1rem}
+.c{color:var(--clara)}.f{color:var(--fanny)}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:100svh;background:var(--salon-deep);color:var(--paper-hi);overflow:hidden;overflow:clip;display:grid;grid-template-columns:1fr minmax(0,620px) 1fr;grid-template-rows:1fr auto;align-items:center;column-gap:clamp(1rem,2.5vw,3rem);padding:clamp(1.5rem,3vw,3rem)}
+.hero::before,.hero::after{content:"";position:absolute;inset:0;pointer-events:none}
+.hero::before{background:radial-gradient(60% 80% at 8% 40%,rgba(229,181,83,.42),transparent 70%);opacity:calc(var(--bl)*1.7)}
+.hero::after{background:radial-gradient(60% 80% at 92% 40%,rgba(243,154,183,.34),transparent 70%);opacity:calc(var(--br)*1.7)}
+.hero>*{position:relative;z-index:1}
+.hero h1{display:contents;font-weight:400}
+.who{font:italic 500 clamp(4.2rem,9.2vw,9.6rem)/.86 var(--display);letter-spacing:-.025em;display:block}
+.who small{display:block;font:400 clamp(.95rem,1.15vw,1.12rem)/1.35 var(--text);letter-spacing:0;margin-top:1.2rem;color:#C6D5CC}
+.who.l{color:var(--clara-lit);text-align:right;opacity:calc(.32 + var(--bl)*1.36);transition:opacity .2s}
+.who.r{color:var(--fanny-lit);opacity:calc(.32 + var(--br)*1.36);transition:opacity .2s;order:3}
+.deck-wrap{order:2}
+.hero-foot{grid-column:1/-1;order:4;display:grid;grid-template-columns:1fr minmax(0,620px) 1fr;column-gap:clamp(1rem,2.5vw,3rem);padding-top:1.4rem}
+.hero-foot>div{grid-column:2;text-align:center}
+.lede{font-size:clamp(1.12rem,1.5vw,1.36rem);line-height:1.38;margin:0 0 .4rem}
+.meta{margin:0;color:#C6D5CC;font-size:.98rem}
+.meta a{color:var(--vu)}
+
+/* ---------- The deck ---------- */
+.deck{background:linear-gradient(#1b2522,#0d1412);border-radius:10px;padding:1.05rem 1.1rem 1.2rem;box-shadow:0 34px 70px -28px #000,inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 0 rgba(0,0,0,.6);color:#D5DED7}
+.bay{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.5fr) minmax(0,1fr);gap:.8rem;align-items:stretch}
+.vu{background:linear-gradient(#FBEBB9,#EBC970);border-radius:4px;box-shadow:inset 0 0 0 2px #11100a,inset 0 0 18px rgba(120,70,0,.4);color:#2a1d05;display:flex;flex-direction:column;justify-content:center;padding:.35rem .25rem;text-align:center;font-size:.84rem;line-height:1.1}
+.vu svg{display:block;width:100%;height:auto;overflow:visible}
+.vu .needle{transform-origin:50px 60px;transform:rotate(-48deg);transform-box:view-box}
+.well{position:relative;background:#050908;border-radius:6px;padding:.55rem;box-shadow:inset 0 3px 8px #000;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.well.drag{cursor:grabbing}
+.cass{container-type:inline-size;perspective:1400px}
+.cass-in{position:relative;aspect-ratio:10/6.3;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.2,.8,.2,1)}
+.side-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:3.5%/6%;background:linear-gradient(170deg,#F2EEDF,var(--shell) 60%,#CFCABA);overflow:hidden}
+.side-face.b{transform:rotateY(180deg)}
+.side-face::after{content:"";position:absolute;left:21%;right:21%;bottom:0;height:17%;background:#CBC6B6;clip-path:polygon(7% 0,93% 0,100% 100%,0 100%)}
+.lab{position:absolute;left:5%;right:5%;top:6%;height:60%;border-radius:2%/4%;background:var(--ivory);border-top:3.4cqw solid var(--tone)}
+.lab b{position:absolute;left:4%;top:7%;font:italic 500 7.8cqw/1 var(--display);color:var(--ink)}
+.lab em{position:absolute;right:4%;top:6%;font:500 8cqw/1 var(--display);color:var(--tone)}
+.lab span{position:absolute;left:4%;top:34%;font-size:2.9cqw;line-height:1.2;color:var(--ink-soft);font-style:normal}
+.win{position:absolute;left:21%;right:21%;top:47%;height:30%;border-radius:999px;background:#17110d;box-shadow:inset 0 0 0 2px rgba(0,0,0,.5);overflow:hidden}
+.reel{position:absolute;display:block;top:50%;aspect-ratio:1;transform:translate(-50%,-50%)}
+.win .reel{width:62%}.win .reel.a{left:16%}.win .reel.z{left:84%}
+.pack{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:repeating-radial-gradient(circle,var(--oxide) 0 2px,#4a2f20 2px 3px)}
+.hub{position:absolute;inset:27%;display:block}
+
+.display{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:.8rem;background:#040706;border-radius:4px;padding:.45rem .7rem;box-shadow:inset 0 1px 5px #000;min-height:3.25rem}
+.display p{margin:0;min-width:0;line-height:1.18}
+.display b{display:block;font:500 1.08rem/1.15 var(--display);color:var(--vu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.display span{display:block;font-size:.88rem;color:#B9C7BE;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.counter{display:flex;gap:2px;flex:none}
+.counter i{font:normal 500 1.08rem/1.5 var(--text);width:1.15rem;text-align:center;background:#1c2220;color:var(--paper-hi);border-radius:2px;font-variant-numeric:tabular-nums lining-nums}
+
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:.75rem;padding:4px;background:#000;border-radius:5px}
+.key{appearance:none;border:0;background:linear-gradient(#FFFBEF,var(--ivory) 70%,#CFC7B0);color:var(--ink);border-radius:0 0 6px 6px;padding:.75rem .2rem .55rem;min-height:4rem;cursor:pointer;box-shadow:0 5px 0 #8e8875;transition:transform .08s,box-shadow .08s;font-size:.9rem;line-height:1.1;display:flex;flex-direction:column;align-items:center;gap:.3rem}
+.key svg{width:1.4rem;height:.95rem;fill:currentColor}
+.key:active,.key[aria-pressed="true"]{transform:translateY(4px);box-shadow:0 1px 0 #8e8875;background:linear-gradient(#EFE7CF,#DDD4BA)}
+.key:focus-visible{outline-offset:-4px;outline-color:var(--fanny)}
+
+.balance{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.7rem;margin-top:1rem;font-size:.97rem}
+.balance .bl{color:var(--clara-lit)}.balance .br{color:var(--fanny-lit)}
+input[type=range]{appearance:none;-webkit-appearance:none;width:100%;height:2.4rem;background:transparent;cursor:ew-resize;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--clara-lit),#57615c 50%,var(--fanny-lit))}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--clara-lit),#57615c 50%,var(--fanny-lit))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;margin-top:-12px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#b9b4a4 60%,#807b6c);border:2px solid #000}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#b9b4a4 60%,#807b6c);border:2px solid #000}
+.hint .coarse{display:none}
+@media (pointer:coarse){.hint .coarse{display:inline}.hint .fine{display:none}}
+.hint{margin:.1rem 0 0;font-size:.9rem;color:#B9C7BE;text-align:center}
+
+/* ---------- Sound ---------- */
+.sound{position:fixed;top:.75rem;right:.85rem;z-index:50;display:flex;align-items:center;gap:.5rem;padding:.42rem .9rem;border-radius:999px;border:1px solid rgba(238,243,234,.55);background:rgba(11,40,35,.9);color:var(--paper-hi);font-size:.96rem;cursor:pointer;transition:opacity .3s}
+.sound:hover{background:var(--salon)}
+.sound i{width:9px;height:9px;border-radius:50%;background:#55615b}
+.sound[aria-pressed="true"] i{background:#73E08D}
+
+/* ---------- Tape bar: desktop reading progress ---------- */
+.tapebar{position:fixed;left:0;right:0;top:0;z-index:40;height:60px;background:var(--salon-deep);color:var(--paper-hi);display:grid;grid-template-columns:44px minmax(160px,1fr) 44px auto 190px;gap:.8rem;align-items:center;padding:0 178px 0 clamp(1rem,2vw,1.6rem);box-shadow:0 4px 18px rgba(0,0,0,.28);transform:translateY(-110%);transition:transform .35s}
+.tapebar.show{transform:none}
+.barreel{position:relative;width:44px;height:44px;border-radius:50%;background:#050908}
+.barreel .reel{left:50%;width:100%}
+.track{position:relative;height:30px}
+.track::before{content:"";position:absolute;left:0;right:0;top:50%;height:3px;margin-top:-1.5px;background:#4B3425}
+.track u{position:absolute;left:0;top:50%;height:3px;margin-top:-1.5px;width:0;background:linear-gradient(90deg,var(--clara-lit),var(--fanny-lit));text-decoration:none}
+.track a{position:absolute;top:0;bottom:0;width:18px;margin-left:-9px;display:block}
+.track a::before{content:"";position:absolute;left:50%;top:7px;bottom:7px;width:2px;margin-left:-1px;background:rgba(238,243,234,.55)}
+.track a:hover::before,.track a[aria-current="true"]::before{background:var(--vu);top:3px;bottom:3px;width:3px}
+.track a span{position:absolute;top:32px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--ink);color:var(--paper-hi);padding:.1rem .5rem;font-size:.86rem;border-radius:3px;opacity:0;pointer-events:none}
+.track a:hover span,.track a:focus-visible span{opacity:1}
+.barnow{min-width:0;line-height:1.15}
+.barnow b{display:block;font:500 1.04rem/1.15 var(--display);color:var(--vu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barnow span{display:block;font-size:.86rem;color:#B9C7BE;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.bar-on .sound{top:.82rem}
+
+/* ---------- Article ---------- */
+main{display:block;padding:5rem clamp(1.15rem,4vw,3rem) 7rem}
+section{max-width:var(--measure);margin:0 auto;padding-top:4.4rem;scroll-margin-top:72px}
+section:first-child{padding-top:0}
+section.wide{max-width:1160px}
+section.wide>h2,section.wide>.lead,section.wide>p{max-width:var(--measure);margin-left:auto;margin-right:auto}
+h2{font:italic 500 clamp(2.6rem,5.6vw,4.4rem)/1 var(--display);letter-spacing:-.018em;margin:0 0 1.25rem}
+h3{font:500 1.62rem/1.15 var(--display);margin:2.1rem 0 .55rem}
+p{margin:0 0 1em}
+.lead{font-size:1.33rem;line-height:1.42}
+strong{font-weight:600}
+.glance{width:100%;border-collapse:collapse;font-size:1.03rem;margin:1.2rem 0}
+.glance th,.glance td{text-align:left;vertical-align:top;padding:.58rem 0;border-top:1px solid var(--rule)}
+.glance th{width:29%;font-weight:600;padding-right:.9rem;color:var(--ink-soft)}
+.glance tr:last-child>*{border-bottom:1px solid var(--rule)}
+.catches{list-style:none;padding:0;margin:1.5rem 0 0;display:grid;gap:.8rem}
+.catches li{padding-left:1.1rem;border-left:3px solid var(--fanny)}
+
+/* Stereo layout */
+.mono-sw{display:none}
+.stereo{display:grid;grid-template-columns:var(--cols);gap:clamp(1.5rem,3vw,3rem);margin-top:1.4rem}
+.chan.l{opacity:calc(.68 + var(--bl)*.9)}.chan.r{opacity:calc(.68 + var(--br)*.9)}
+.bal-page{display:grid;max-width:30rem;margin:1rem auto 0}
+.bal-page .bl{color:var(--clara);font-weight:600}.bal-page .br{color:var(--fanny);font-weight:600}
+.bal-page input[type=range]::-webkit-slider-runnable-track{background:linear-gradient(90deg,var(--clara),#8a958f 50%,var(--fanny))}
+.bal-page input[type=range]::-moz-range-track{background:linear-gradient(90deg,var(--clara),#8a958f 50%,var(--fanny))}
+.chan{--tone:var(--clara);min-width:0}
+.chan.r{--tone:var(--fanny)}
+.chan-head{display:flex;align-items:baseline;gap:.7rem;border-top:5px solid var(--tone);padding-top:.5rem}
+.chan-head .ltr{font:500 2.7rem/1 var(--display);color:var(--tone)}
+.chan-head h3{margin:0;color:var(--tone);font-size:1.8rem}
+.chan .work{font-size:1.02rem;color:var(--ink-soft);margin:.35rem 0 .9rem}
+.chan h4{font:600 1rem var(--text);margin:1rem 0 .2rem;color:var(--tone)}
+.mvts{list-style:none;margin:1.2rem 0;padding:0;border-top:2px solid var(--ink)}
+.mvt{border-bottom:1px solid var(--rule)}
+.mvt>button{appearance:none;background:none;border:0;cursor:pointer;width:100%;display:grid;grid-template-columns:1.9rem 1fr 1rem;gap:.3rem;align-items:baseline;padding:.72rem 0;text-align:left}
+.mvt .n{font:italic 500 1.1rem var(--display);color:var(--tone)}
+.mvt .nm{font:500 1.28rem/1.18 var(--display)}
+.mvt .k{display:block;font:400 .95rem/1.3 var(--text);color:var(--ink-soft);margin-top:.12rem}
+.mvt .pm{position:relative;width:.9rem;height:.9rem;align-self:center}
+.mvt .pm::before,.mvt .pm::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:var(--tone);transition:transform .3s}
+.mvt .pm::after{transform:rotate(90deg)}
+.mvt[data-open="true"] .pm::after{transform:rotate(0)}
+.mvt[data-open="true"] .nm{color:var(--tone)}
+.mbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}
+.mvt[data-open="true"] .mbody{grid-template-rows:1fr}
+.mbody>div{overflow:hidden;visibility:hidden;transition:visibility .4s}
+.mvt[data-open="true"] .mbody>div{visibility:visible}
+.mbody>div>div{padding:0 0 1rem 2.2rem;font-size:1.03rem}
+.mbody h5{font:600 .96rem var(--text);margin:.5rem 0 .12rem;color:var(--tone)}
+.mbody p{margin:0}
+
+/* Timeline */
+.views{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;padding:3px;margin:.2rem 0 1rem}
+.views button{appearance:none;border:0;background:none;padding:.32rem .95rem;border-radius:999px;cursor:pointer;font-size:.98rem}
+.views button[aria-pressed="true"]{background:var(--ink);color:var(--paper-hi)}
+.tl-hint{display:none;margin:0 0 .2rem;color:var(--ink-soft)}
+.tl-scroll{overflow-x:auto;padding-bottom:.4rem}
+.tl{position:relative;min-width:640px;padding:1.7rem 0 2.1rem}
+.tl-band{pointer-events:none;position:absolute;top:1.4rem;bottom:1.8rem;width:5px;margin-left:-2.5px;background:var(--vu);box-shadow:0 0 0 1px var(--ink)}
+.tl-band span{position:absolute;top:0;left:50%;white-space:nowrap;font-size:.92rem;font-weight:600;transform:translate(-50%,-100%)}
+.lane{position:relative;height:4rem;--tone:var(--clara)}
+.lane.f{--tone:var(--fanny)}.lane.rec{--tone:var(--ink)}
+.lane>label,.lane>span.nm{position:absolute;left:0;top:.15rem;font:italic 500 1.1rem var(--display);color:var(--tone);white-space:nowrap}
+.life{position:absolute;top:2.1rem;height:.72rem;background:var(--tone);border-radius:2px}
+.lane.rec .life{background:none;border-top:1px dashed var(--ink);height:0;top:2.45rem;border-radius:0}
+.dot{appearance:none;position:absolute;top:1.85rem;width:1.25rem;height:1.25rem;margin-left:-.625rem;border-radius:50%;background:var(--paper);border:3px solid var(--tone);cursor:pointer;padding:0}
+.dot:hover,.dot:focus-visible,.dot.on{background:var(--tone)}
+.dot.mark{background:var(--vu)}
+.axis{position:absolute;left:0;right:0;bottom:0;height:1.8rem;border-top:1px solid var(--ink);font-size:.92rem;color:var(--ink-soft)}
+.axis span{position:absolute;top:.25rem;transform:translateX(-50%);white-space:nowrap}
+.axis span:first-child{transform:none}.axis span:last-child{transform:translateX(-100%)}
+.tl-cap{min-height:4.2em;margin:.6rem 0 1.5rem;padding:.65rem .9rem;background:var(--paper-hi);border-left:4px solid var(--ink)}
+.tl-cap b{display:block;font:500 1.2rem/1.2 var(--display)}
+
+/* Stage */
+.dark{background:var(--salon);color:var(--paper-hi);border-radius:8px;padding:clamp(1.1rem,2.6vw,1.8rem);margin:1.6rem 0}
+.dark a{color:var(--vu)}
+.stage{position:relative;aspect-ratio:16/8.4;background:radial-gradient(70% 90% at 50% 100%,rgba(244,201,93,.2),transparent 70%),var(--salon-deep);border-radius:5px;overflow:hidden}
+.seat{appearance:none;background:none;border:0;position:absolute;transform:translate(-50%,-50%);cursor:pointer;color:var(--paper-hi);text-align:center;font-size:1rem;line-height:1.15;padding:.3rem}
+.seat svg{display:block;margin:0 auto .3rem;height:clamp(3.6rem,10vw,6.4rem);width:auto;fill:none;stroke:currentColor;stroke-width:2;transition:transform .2s}
+.seat:hover svg,.seat.on svg{stroke:var(--vu);transform:scale(1.07)}
+.seat.on{color:var(--vu)}
+.bio{min-height:7.5em;padding-top:.9rem}
+.bio b{display:block;font:500 1.42rem/1.15 var(--display);margin-bottom:.22rem;color:var(--vu)}
+.bio p{margin:0}
+.small{font-size:.96rem}
+.dark .small{color:#C6D5CC}
+
+/* Connections */
+.hearkeys{display:flex;flex-wrap:wrap;gap:.45rem;margin:1rem 0 .5rem}
+.hearkeys button{appearance:none;background:var(--ivory);color:var(--ink);border:0;border-radius:0 0 5px 5px;padding:.5rem .8rem;cursor:pointer;box-shadow:0 3px 0 #8e8875;font-size:1rem}
+.hearkeys button:active{transform:translateY(2px);box-shadow:0 1px 0 #8e8875}
+.dark ul{padding-left:1.1rem;margin:.5rem 0}.dark li{margin-bottom:.6rem}
+
+.recs{list-style:none;margin:1rem 0 0;padding:0}
+.recs li{padding:.85rem 0;border-top:1px solid var(--rule)}
+.recs li:last-child{border-bottom:1px solid var(--rule)}
+.recs b{display:block;font:500 1.24rem/1.2 var(--display)}
+
+/* Tabs */
+.tabs{display:flex;gap:.25rem;margin-top:1.3rem;border-bottom:2px solid var(--ink)}
+.tabs button{appearance:none;border:0;background:none;cursor:pointer;padding:.5rem 1rem .4rem;font:500 1.22rem var(--display);border-radius:4px 4px 0 0;color:var(--ink-soft)}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper-hi)}
+.links{list-style:none;margin:0;padding:0}
+.links li{border-bottom:1px solid var(--rule)}
+.links a{display:block;padding:.8rem 0;text-decoration:none}
+.links a:hover .lt{color:var(--fanny)}
+.lt{display:block;font:500 1.17rem/1.22 var(--display)}
+.lw{display:block;font-size:1.02rem;color:var(--ink-soft);margin-top:.15rem}
+.tag{display:inline-block;font-size:.85rem;font-weight:600;padding:0 .42rem;border-radius:3px;background:var(--salon);color:var(--paper-hi);margin-left:.3rem;vertical-align:.08em;font-family:var(--text)}
+.tag.sch{background:none;color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.caveat{font-size:1rem;color:var(--ink-soft);margin:.9rem 0}
+.sources{columns:2 17rem;column-gap:2rem;font-size:.98rem;padding-left:1.1rem}
+.sources li{break-inside:avoid;margin-bottom:.32rem}
+footer{background:var(--salon-deep);color:#C6D5CC;padding:2.6rem clamp(1.15rem,4vw,3rem) 6.5rem;font-size:1rem}
+footer p{max-width:64ch;margin:0 auto .6rem}
+
+/* Mobile bar + sheet */
+.mini{display:none}
+.sheet{border:0;padding:0;margin:auto auto 0;width:100%;max-width:none;max-height:84svh;background:var(--salon-deep);color:var(--paper-hi);border-radius:16px 16px 0 0}
+.sheet::backdrop{background:rgba(6,20,17,.6)}
+.sheet[open]{animation:up .34s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.sheet header{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.25rem .2rem}
+.sheet h2{font-size:2rem;margin:0}
+.sheet header button{appearance:none;border:0;background:none;color:var(--vu);padding:.5rem;cursor:pointer}
+.sheet ol{list-style:none;margin:0;padding:.2rem 1.25rem 2rem}
+.sheet a{display:block;padding:.62rem 0;border-bottom:1px solid rgba(238,243,234,.15);text-decoration:none;font:500 1.3rem var(--display)}
+.sheet a[aria-current="true"]{color:var(--vu)}
+
+@media (max-width:1040px){
+  .hero{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;row-gap:1.4rem;align-content:center}
+  .who.l{text-align:left;order:0}.who.r{order:1;text-align:right}
+  .deck-wrap{grid-column:1/-1;justify-self:center;width:min(100%,640px)}
+  .hero-foot{display:block}.hero-foot>div{max-width:640px;margin:0 auto}
+  .tapebar{display:none}
+  .mini{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:.65rem;position:fixed;left:.5rem;right:.5rem;bottom:calc(.5rem + env(safe-area-inset-bottom));z-index:45;padding:.45rem .5rem;background:var(--salon-deep);color:var(--paper-hi);border-radius:12px;box-shadow:0 12px 30px -8px rgba(0,0,0,.65);transform:translateY(150%);transition:transform .4s}
+  .mini.show{transform:none}
+  body.mini-on .sound{opacity:0;pointer-events:none}
+  .miniprog{position:absolute;left:12px;right:12px;top:0;height:3px;background:rgba(238,243,234,.2);overflow:hidden}
+  .miniprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--clara-lit),var(--fanny-lit))}
+  .minireels{display:flex;gap:2px}
+  .minireels span.barreel{width:25px;height:25px}
+  .mininow{appearance:none;background:none;border:0;text-align:left;cursor:pointer;min-width:0;padding:.15rem 0;color:inherit}
+  .mininow b{display:block;font:500 1.08rem/1.15 var(--display);color:var(--vu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mininow span{display:block;font-size:.86rem;color:#C6D5CC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .minisound{appearance:none;width:44px;height:44px;border:1px solid rgba(238,243,234,.35);border-radius:8px;background:none;color:inherit;cursor:pointer;display:grid;place-items:center;font-size:.8rem;line-height:1}
+  .minisound[aria-pressed="true"]{background:var(--vu);color:var(--ink)}
+  section{scroll-margin-top:1rem}
+}
+@media (max-width:760px){
+  body{font-size:1.1rem}
+  .hero{display:block;padding:3.6rem 1.15rem 1.2rem;min-height:100svh}
+  .who{font-size:clamp(5.2rem,25.5vw,8rem);line-height:.84}
+  .who small{display:none}
+  .who.l{text-align:left}.who.r{text-align:right;margin-top:-.08em}
+  .deck-wrap{justify-self:start;width:128vw;margin:1.1rem 0 0 calc(-14vw - 1.15rem)}
+  .deck{border-radius:0;padding:.8rem 0 1rem}
+  .bay{grid-template-columns:minmax(0,.84fr) minmax(0,2.6fr) minmax(0,.84fr);gap:.5rem}
+  .deck .display,.deck .keys,.deck .balance,.deck .hint{margin-left:17vw;margin-right:17vw}
+  .hero-foot{display:none}
+  .mobile-intro{display:block!important}
+  .stereo{grid-template-columns:minmax(0,1fr)}
+  .chan.l,.chan.r{opacity:1}
+  .bal-page{display:none}
+  .tl-hint{display:block}
+  .stereo[data-show="1"] .chan.r,.stereo[data-show="2"] .chan.l{display:none}
+  .mono-sw{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;padding:3px;margin-top:.3rem}
+  .mono-sw button{appearance:none;border:0;background:none;border-radius:999px;padding:.42rem 1rem;cursor:pointer}
+  .mono-sw button[aria-pressed="true"][data-side="1"]{background:var(--clara);color:#fff}
+  .mono-sw button[aria-pressed="true"][data-side="2"]{background:var(--fanny);color:#fff}
+  .stage{aspect-ratio:4/3}
+  .glance th{width:34%}
+}
+.mobile-intro{display:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cass-in,.mbody,.mini,.tapebar,.mbody>div{transition:none}.sheet[open]{animation:none}.seat svg{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#article">Skip to the article</a>
+<button class="sound" type="button" aria-pressed="false"><i aria-hidden="true"></i><span data-sound-lab>Turn sound on</span></button>
+
+<header class="hero">
+  <h1>
+    <span class="who l">Clara<small>Left channel. Piano Trio in G minor, Op. 17, finished in September 1846.</small></span>
+    <span class="who r">Fanny<small>Right channel. Piano Trio in D minor, Op. 11, premiered on April 11, 1847.</small></span>
+  </h1>
+  <div class="deck-wrap">
+    <div class="deck" role="group" aria-label="Cassette deck">
+      <div class="bay">
+        <div class="vu" aria-hidden="true"><svg viewBox="0 0 100 68"><path d="M12 46A46 46 0 0 1 88 46" fill="none" stroke="#2a1d05" stroke-width="1.6"/><path d="M68 25A46 46 0 0 1 88 46" fill="none" stroke="#A92F55" stroke-width="4"/><g class="needle" data-needle="l"><line x1="50" y1="60" x2="50" y2="8" stroke="#1b1203" stroke-width="1.8"/></g><circle cx="50" cy="60" r="4.5" fill="#1b1203"/></svg>Clara</div>
+        <div class="well" data-well aria-hidden="true">
+          <div class="cass"><div class="cass-in" data-cass>
+            <div class="side-face a" style="--tone:var(--clara)"><div class="lab"><b>Clara Schumann</b><em>1</em><span>Piano Trio in G minor, Op. 17<br>The Dartington Piano Trio</span></div><div class="win"><span class="reel a" data-reel="a"></span><span class="reel z" data-reel="z"></span></div></div>
+            <div class="side-face b" style="--tone:var(--fanny)"><div class="lab"><b>Fanny Mendelssohn</b><em>2</em><span>Piano Trio in D minor, Op. 11<br>The Dartington Piano Trio</span></div><div class="win"><span class="reel a" data-reel="a"></span><span class="reel z" data-reel="z"></span></div></div>
+          </div></div>
+        </div>
+        <div class="vu" aria-hidden="true"><svg viewBox="0 0 100 68"><path d="M12 46A46 46 0 0 1 88 46" fill="none" stroke="#2a1d05" stroke-width="1.6"/><path d="M68 25A46 46 0 0 1 88 46" fill="none" stroke="#A92F55" stroke-width="4"/><g class="needle" data-needle="r"><line x1="50" y1="60" x2="50" y2="8" stroke="#1b1203" stroke-width="1.8"/></g><circle cx="50" cy="60" r="4.5" fill="#1b1203"/></svg>Fanny</div>
+      </div>
+      <div class="display" aria-live="polite"><p><b data-deck-t>Tape loaded</b><span data-deck-s>Press Play, or turn the balance</span></p><div class="counter num" aria-hidden="true"><i data-c>0</i><i data-c>0</i><i data-c>0</i></div></div>
+      <div class="keys">
+        <button class="key" type="button" data-t="rew" aria-label="Previous movement"><svg viewBox="0 0 24 14" aria-hidden="true"><path d="M12 0v14L2 7zM23 0v14L13 7z"/></svg>Rew</button>
+        <button class="key" type="button" data-t="play" aria-pressed="false" aria-label="Play the deck"><svg viewBox="0 0 24 14" aria-hidden="true"><path d="M7 0l12 7-12 7z"/></svg>Play</button>
+        <button class="key" type="button" data-t="ff" aria-label="Next movement"><svg viewBox="0 0 24 14" aria-hidden="true"><path d="M2 0l10 7-10 7zM13 0l10 7-10 7z"/></svg>FF</button>
+        <button class="key" type="button" data-t="flip" aria-label="Flip the cassette"><svg viewBox="0 0 24 14" aria-hidden="true"><path d="M12 0l9 8H3zM3 10h18v3H3z"/></svg>Flip</button>
+      </div>
+      <label class="balance"><span class="bl">Clara</span><input type="range" min="0" max="100" value="50" data-bal aria-label="Balance between Clara on the left and Fanny on the right"><span class="br">Fanny</span></label>
+      <p class="hint">Turn the balance, or <span class="fine">drag</span><span class="coarse">swipe</span> the cassette sideways.</p>
+    </div>
+  </div>
+  <div class="hero-foot"><div>
+    <p class="lede">Two great pianists, one piano trio each, written months apart. One of them did not live to see hers published.</p>
+    <p class="meta">The Dartington Piano Trio. Hyperion KA66331, recorded November 28-29, 1988. <a href="#article">Start reading</a></p>
+  </div></div>
+</header>
+
+<nav class="tapebar" aria-label="Reading progress">
+  <span class="barreel" aria-hidden="true"><span class="reel" data-reel="a"></span></span>
+  <div class="track"><u data-trackfill></u><span data-ticks></span></div>
+  <span class="barreel" aria-hidden="true"><span class="reel" data-reel="z"></span></span>
+  <div class="counter num" aria-hidden="true"><i data-c>0</i><i data-c>0</i><i data-c>0</i></div>
+  <p class="barnow" style="margin:0" aria-live="polite"><b data-bar-t>At a glance</b><span data-bar-s>Tape at the leader</span></p>
+</nav>
+
+<main id="article">
+<div class="mobile-intro"><p class="lead">Two great pianists, one piano trio each, written months apart. One of them did not live to see hers published.</p><p>The Dartington Piano Trio. Hyperion KA66331, recorded November 28-29, 1988.</p></div>
+
+<section id="glance" data-title="At a glance" data-sub="Hyperion KA66331">
+  <h2>The recording at a glance</h2>
+  <p class="lead">This is the cassette twin of Hyperion's CD CDA66331, recorded over two days in November 1988 and released at the end of 1989.</p>
+  <table class="glance"><tbody>
+    <tr><th scope="row">Title</th><td>Piano Trios: Fanny Mendelssohn, Clara Schumann</td></tr>
+    <tr><th scope="row">Performers</th><td>The Dartington Piano Trio: Oliver Butterworth (violin), Michael Evans (cello), Frank Wibaut (piano)</td></tr>
+    <tr><th scope="row">Conductor</th><td>None; this is chamber music</td></tr>
+    <tr><th scope="row">Label and catalog</th><td>Hyperion KA66331 (cassette), CDA66331 (CD), later CDH55078 (budget Helios CD)</td></tr>
+    <tr><th scope="row">Recorded</th><td>November 28-29, 1988 (<a href="https://catalog.berklee.edu/eg/opac/record/12074?locg=1">Berklee library catalog</a>). Venue not verified</td></tr>
+    <tr><th scope="row">This copy</th><td>Stereo cassette, about 1989. The catalog number and tape details come from an earlier reading of the shell and inlay</td></tr>
+    <tr><th scope="row">CD release</th><td>December 7, 1989 in the UK (Proper Music); AllMusic lists February 1, 1990</td></tr>
+    <tr><th scope="row">Program</th><td><span class="c">Clara Schumann</span>, Piano Trio in G minor, Op. 17; <span class="f">Fanny Mendelssohn</span>, Piano Trio in D minor, Op. 11</td></tr>
+    <tr><th scope="row">Total time</th><td>56:14 (AllMusic, for the CD)</td></tr>
+  </tbody></table>
+  <h3>Three catches</h3>
+  <ul class="catches">
+    <li>The cover bills Fanny first, but the program runs Clara first.</li>
+    <li>The shell and inlay, as read earlier, call Fanny's trio "D major." It is in D minor, and a later US club edition repeats the same slip.</li>
+    <li>BBC Music Magazine's "1988" is the session year, not the release year.</li>
+  </ul>
+</section>
+
+<section id="hook" data-title="The hook" data-sub="A conversation, nearly">
+  <h2>The hook</h2>
+  <p class="lead">This tape pairs two trios that were nearly a conversation, and it leaves you to decide which verdict to believe: the composer's or the music's.</p>
+  <p>Clara Schumann finished hers in September 1846. In March 1847 she was visiting Fanny Hensel's Berlin household almost daily, while Fanny was struggling with a trio of her own. Fanny played its premiere on April 11 and was dead on May 14. Clara had reportedly meant to dedicate her trio to Fanny, and published it that year with no dedication at all.</p>
+  <p>Then comes the twist. Once Robert Schumann wrote his own trio, Clara said she <a href="https://www.cambridge.org/core/books/clara-schumann-studies/formal-innovation-and-virtuosity-in-clara-schumanns-piano-trio-in-g-minor-op-17/6CC786542EC8776977F5B87F9BA74CEA">no longer cared for hers</a>, calling it effeminate and sentimental by comparison. Scholar Nicole Grimes now argues it was a formal model for Robert's trio, and for Brahms and Smetana after him. So the woman who dismissed the piece may have taught her husband how to write his.</p>
+</section>
+
+<section id="music" class="wide" data-title="The music" data-sub="Left channel, right channel">
+  <h2>The music</h2>
+  <p>Both works are the only piano trios their composers wrote, both are four-movement, minor-key pieces, and both were written by pianists who had to think hard about the two strings. A piano trio is piano, violin and cello; by the 1840s it often ran like a small symphony. Open any movement for its story and what to listen for.</p>
+  <p class="mono-wrap"><span class="mono-sw" role="group" aria-label="Choose a channel"><button type="button" data-side="1" aria-pressed="true">Left: Clara</button><button type="button" data-side="2" aria-pressed="false">Right: Fanny</button></span></p>
+  <label class="balance bal-page"><span class="bl">Clara</span><input type="range" min="0" max="100" value="50" data-bal aria-label="Balance between the Clara and Fanny columns"><span class="br">Fanny</span></label>
+  <div class="stereo" data-stereo data-show="1">
+    <div class="chan l">
+      <div class="chan-head"><span class="ltr">L</span><h3>Clara Schumann</h3></div>
+      <p class="work">Piano Trio in G minor, Op. 17 (1846)</p>
+      <p><strong>Why it exists.</strong> Clara wrote it in Dresden between May and September 1846, after a winter studying Bach and Cherubini counterpoint (music built from independent melodies) with Robert. Her son Emil, born that February, was very ill. She suffered what sources describe as a likely miscarriage on the summer trip to Norderney, and gave a concert the next day. It came after her Op. 16 preludes and fugues, which critics had found surprising from a "feminine mind."</p>
+      <p><strong>Premiere and reception.</strong> She premiered it in Vienna on January 15, 1847. Viennese reviewers praised its clarity, while still expressing surprise at such control from a woman. Breitkopf &amp; Härtel published it that year. Mendelssohn and Joachim admired the finale's fugal passage.</p>
+      <ol class="mvts">
+        <li class="mvt" data-n="0" data-name="Allegro moderato" data-chord="gmin"><button type="button" aria-expanded="false"><span class="n">i</span><span><span class="nm">Allegro moderato</span><span class="k">G minor</span></span><span class="pm" aria-hidden="true"></span></button><div class="mbody"><div><div><h5>The story</h5><p>Sonata form: an opening theme, a contrasting theme, a development, a return. The violin states the first theme alone before the piano takes it.</p><h5>Listen for</h5><p>The violin opens alone with the first theme, then the piano takes it over. A chordal second theme arrives in the piano. In the development, listen for violin and cello tangling in independent lines. When the opening returns, both themes stay in G minor, so the bright second theme now sounds darker.</p></div></div></div></li>
+        <li class="mvt" data-n="1" data-name="Scherzo, Tempo di menuetto" data-chord="bbmaj"><button type="button" aria-expanded="false"><span class="n">ii</span><span><span class="nm">Scherzo, Tempo di menuetto</span><span class="k">B-flat major; Trio in E-flat</span></span><span class="pm" aria-hidden="true"></span></button><div class="mbody"><div><div><h5>The story</h5><p>A dance at minuet speed with a snappy dotted rhythm. The cello plucks under the violin while the piano adds chords.</p><h5>Listen for</h5><p>Count it in three. Catch the short-long snap in the tune and the plucked cello beneath. The middle Trio is smoother; then the opening returns.</p></div></div></div></li>
+        <li class="mvt" data-n="2" data-name="Andante" data-chord="gmaj"><button type="button" aria-expanded="false"><span class="n">iii</span><span><span class="nm">Andante</span><span class="k">G major</span></span><span class="pm" aria-hidden="true"></span></button><div class="mbody"><div><div><h5>The story</h5><p>Eight bars of solo piano, then the violin takes the song. The middle turns restless and minor before the calm returns.</p><h5>Listen for</h5><p>The emotional center. Eight bars of piano alone, in major, then the violin takes the song. Mark the moment all three lock into dotted long-short rhythms and the mood turns restless.</p></div></div></div></li>
+        <li class="mvt" data-n="3" data-name="Allegretto" data-chord="gmin"><button type="button" aria-expanded="false"><span class="n">iv</span><span><span class="nm">Allegretto</span><span class="k">G minor</span></span><span class="pm" aria-hidden="true"></span></button><div class="mbody"><div><div><h5>The story</h5><p>Sonata form again, with the opening theme treated as a fugue subject in the development and coda.</p><h5>Listen for</h5><p>Listen for the theme turning into a fugue subject, passed between violin and cello as the piano runs elaborately around them. Sources differ on the opening: the Open University hears the Andante's theme in it, Wikipedia the first movement's. Decide for yourself.</p></div></div></div></li>
+      </ol>
+      <p><strong>What makes it distinctive.</strong> Clara had studied violin as a girl, and it shows: the strings get real themes rather than decoration. Grimes hears the fugal writing as a compositional virtuosity that matches the piano part.</p>
+    </div>
+    <div class="chan r">
+      <div class="chan-head"><span class="ltr">R</span><h3>Fanny Mendelssohn</h3></div>
+      <p class="work">Piano Trio in D minor, Op. 11 (1847)</p>
+      <p><strong>Why it exists.</strong> It was a birthday present for her sister Rebecka. Sources disagree on the start date: Wikipedia, citing R. Larry Todd, says 1846-47, while All Classical, citing Grove, says early 1847. In March 1847 she wrote in her diary that the trio was giving her a lot of trouble.</p>
+      <p><strong>Premiere and reception.</strong> Fanny played the piano on April 11, 1847 at her Sunday concert series, with diplomat Robert von Keudell on violin and her brother Paul on cello. A Berlin critic that year called the first movement a masterpiece. Days after the premiere she worried in her diary that her inspiration was going. She finished one more piece, a song, and died May 14. Breitkopf &amp; Härtel published the trio in 1850.</p>
+      <ol class="mvts">
+        <li class="mvt" data-n="4" data-name="Allegro molto vivace" data-chord="dmin"><button type="button" aria-expanded="false"><span class="n">i</span><span><span class="nm">Allegro molto vivace</span><span class="k">The trio's home key, D minor</span></span><span class="pm" aria-hidden="true"></span></button><div class="mbody"><div><div><h5>The story</h5><p>Starts softly but with fierce energy, driven by whirling piano figures, then opens into a lyrical second theme.</p><h5>Listen for</h5><p>The piano churns from the first bar while the strings sing a broad, yearning tune above it. Memorize the lyrical second theme; it is the payoff at the very end. Ask whether the strings get drowned, since balance is the hard problem here.</p></div></div></div></li>
+        <li class="mvt" data-n="5" data-name="Andante espressivo" data-chord="dmin"><button type="button" aria-expanded="false"><span class="n">ii</span><span><span class="nm">Andante espressivo</span><span class="k">A song without words</span></span><span class="pm" aria-hidden="true"></span></button><div class="mbody"><div><div><h5>The story</h5><p>A delicate piano solo opens it, like one of Felix's Songs without Words.</p><h5>Listen for</h5><p>Piano alone first. Notice how naturally the strings enter a texture that began as a solo piece.</p></div></div></div></li>
+        <li class="mvt" data-n="6" data-name="Lied: Allegretto" data-chord="dmin"><button type="button" aria-expanded="false"><span class="n">iii</span><span><span class="nm">Lied: Allegretto</span><span class="k">A song, not a scherzo</span></span><span class="pm" aria-hidden="true"></span></button><div class="mbody"><div><div><h5>The story</h5><p>A song where you would expect a scherzo, with a prominent reference to an aria from Felix's oratorio <em>Elijah</em>.</p><h5>Listen for</h5><p>It lasts only a couple of minutes. Listen for the echo of <em>Elijah</em>, Felix's recent oratorio, inside his sister's song.</p></div></div></div></li>
+        <li class="mvt" data-n="7" data-name="Finale: Allegretto moderato" data-chord="dmin"><button type="button" aria-expanded="false"><span class="n">iv</span><span><span class="nm">Finale: Allegretto moderato</span><span class="k">The circle closes</span></span><span class="pm" aria-hidden="true"></span></button><div class="mbody"><div><div><h5>The story</h5><p>An almost improvised piano solo, drama, and then the return of the first movement's lyrical theme.</p><h5>Listen for</h5><p>A long piano introduction, almost improvised, as she might have played at her own concerts. Wait for the first movement's second theme to come back.</p></div></div></div></li>
+      </ol>
+      <p><strong>What makes it distinctive.</strong> The piano part is demanding, the mood is angrier than you might expect from a birthday gift, and the song keeps breaking in. Sheila Hayman, her descendant, calls it her masterpiece.</p>
+    </div>
+  </div>
+</section>
+
+<section id="world" class="wide" data-title="Their world" data-sub="Dresden and Berlin, 1846-47">
+  <h2>The composers and their world</h2>
+  <p class="lead">In 1846-47 both women were celebrated keyboard players whose composing was treated as a sideline, and they knew each other when they wrote these trios.</p>
+  <div style="max-width:1000px;margin:0 auto">
+    <div class="views" role="group" aria-label="Timeline scale"><button type="button" data-view="lives" aria-pressed="true">Whole lives and after</button><button type="button" data-view="months" aria-pressed="false">1846-47, by month</button></div>
+    <p class="tl-hint small">Swipe the timeline sideways to reach 1988.</p>
+    <div class="tl-scroll" tabindex="0" aria-label="Timeline, scrolls sideways"><div class="tl" data-tl></div></div>
+    <p class="tl-cap" aria-live="polite" data-tl-cap>Select a point on any lane to read what happened.</p>
+  </div>
+  <div style="max-width:var(--measure);margin:0 auto">
+    <p><strong>Clara Schumann (1819-1896).</strong> She was trained by her father, Friedrich Wieck, from age five, played the Leipzig Gewandhaus at nine, and caused such a stir in Vienna in 1838 that police were called to the box office. Her marriage to Robert in 1840 took a lawsuit against her father. By 1846 she was keeping a family afloat in Dresden, touring and teaching while Robert struggled with illness. Her confidence was fragile: in 1839 she had written that no woman had yet managed to compose, and asked why she should expect to be the first. After Robert's death in 1856 she mostly stopped composing and spent four more decades as one of Europe's leading pianists, supporting her children.</p>
+    <p><strong>Fanny Mendelssohn Hensel (1805-1847).</strong> She had the same education as her brother Felix until the point it mattered. <a href="https://www.npr.org/transcripts/478734604">Anna Beer tells</a> of their father returning from a trip when she was 14: Felix got a notebook for his first opera, and she got jewels and a message that music would be an ornament to her home. Felix wrote in 1837 that publishing would only disturb her household duties. He also published six of her songs under his own name, and Queen Victoria picked one of hers as her favorite of his. Her husband, the painter Wilhelm Hensel, reportedly left blank manuscript paper on her music stand each morning. She ran the family's Sunday concerts in Berlin and wrote over 450 works. Only in 1846 did she publish under her own name.</p>
+    <p><strong>The end of the story.</strong> Fanny had a stroke while rehearsing Felix's <em>Die erste Walpurgisnacht</em> and died at 41. Felix died of the same cause that November, after writing his F minor quartet in her memory. Clara's son Emil died that June. Robert's first trio, Op. 63, appeared the same year, and Clara heard her own differently afterward.</p>
+    <p><strong>The currents of the time.</strong> Berlin had food riots and political unrest the spring Fanny's trio was heard, a year before the 1848 revolutions. Women could perform in public, but publishing large works was almost exclusively a male domain. For a woman of Fanny's class, a professional career counted as indecent. Counterpoint was the sharp edge of this: writing fugues was a claim to the craft people assumed women lacked.</p>
+    <p><strong>What came next.</strong> Both trios were played in the 19th century and then faded. Fanny's music stayed largely out of reach until late in the 20th century; most of it was hard to access until the 1990s, which is why a tape from 1989 sits near the start of the revival. In 2010 Angela Mace Christian proved Fanny, not Felix, wrote the <a href="https://www.smithsonianmag.com/smart-news/sonata-fanny-mendelssohn-mistakenly-attributed-her-brother-premieres-under-her-name-180962429/">Easter Sonata</a>.</p>
+  </div>
+</section>
+
+<section id="performers" data-title="The performers" data-sub="The Dartington Piano Trio">
+  <h2>The performers</h2>
+  <p class="lead">The Dartington Piano Trio was a working English group rooted in teaching and regional concerts, not a star ensemble.</p>
+  <p><strong>The ensemble.</strong> <a href="https://www.hyperion-records.co.uk/a.asp?a=A318">Hyperion says</a> it formed in 1980 from the larger Dartington Ensemble, continuing the public music-making of the Dartington String Quartet. Its concerts included many schools in South Devon, and it recorded Martinů, Bridge and this program for Hyperion. Dartington is the arts estate in Devon, home to a college of arts and a famous summer music school. By a 1998 recording the trio had a different pianist, John Bryden, so this tape captures one lineup. I found no dates for the group's end.</p>
+  <div class="dark">
+    <div class="stage" data-stage>
+      <button class="seat" type="button" style="left:20%;top:48%" data-who="violin" aria-label="Oliver Butterworth, violin"><svg viewBox="0 0 40 80" aria-hidden="true"><path d="M20 2v20M15 3h10"/><path d="M20 22c-6 0-9 5-9 10 0 3 2 5 3 7-3 2-6 6-6 12 0 11 6 25 12 25s12-14 12-25c0-6-3-10-6-12 1-2 3-4 3-7 0-5-3-10-9-10z"/></svg>Violin</button>
+      <button class="seat" type="button" style="left:50%;top:40%" data-who="piano" aria-label="Frank Wibaut, piano"><svg viewBox="0 0 90 90" style="height:clamp(5rem,14vw,8.5rem)" aria-hidden="true"><path d="M8 84V12c0-5 3-8 8-8h28c18 0 34 14 34 34v46z"/><path d="M8 72h70M15 72v12M24 72v12M33 72v12M42 72v12M51 72v12M60 72v12M69 72v12"/></svg>Piano</button>
+      <button class="seat" type="button" style="left:80%;top:48%" data-who="cello" aria-label="Michael Evans, cello"><svg viewBox="0 0 50 90" aria-hidden="true"><path d="M25 2v26M19 3h12M25 80v9"/><path d="M25 26c-7 0-11 6-11 12 0 3 2 6 3 8-4 2-8 7-8 14 0 11 7 20 16 20s16-9 16-20c0-7-4-12-8-14 1-2 3-5 3-8 0-6-4-12-11-12z"/></svg>Cello</button>
+    </div>
+    <div class="bio" aria-live="polite" data-bio><b>Pick a player</b><p>Positions are illustrative; I did not find documentation of how the trio sat in this session.</p></div>
+  </div>
+  <p><strong>Where this sits in their careers.</strong> It is one of a small Hyperion catalog that made the trio's name beyond Devon. No member's biography treats it as a landmark, but it is the trio's lasting calling card: WNYC was still playing the Fanny in April 2026.</p>
+</section>
+
+<section id="recording" data-title="The recording" data-sub="Hyperion's first decade">
+  <h2>The recording itself</h2>
+  <p class="lead">This tape comes from the decade when a label started on minicab money became the place to find music nobody else would record.</p>
+  <p><strong>The label.</strong> Ted Perry founded Hyperion in 1980, driving a minicab at night while his family packed records. Its first release won over clarinetist Thea King with a cow on the cover, her favorite animal. Perry then heard Hildegard of Bingen on BBC Radio 3 while driving late at night, and the 1982 result, <em>A Feather on the Breath of God</em>, paid for his mistakes, as he later joked. His stated aim was records no one else would make. In 1988-89, two trios by women fit that brief exactly.</p>
+  <p><strong>This release.</strong> KA appears to be the cassette prefix for CDA66331. The program moved to the budget Helios line in 2001 as CDH55078, and to a 2008 Musical Heritage Society club CD. Helios, named for Hyperion's mythical son, has since been wound down. Hyperion resisted streaming until Universal bought it in 2023.</p>
+  <p><strong>Credits.</strong> The club-edition listing names Antony Howell as engineer and Terry Shannon as designer. Those names, with Cecile Kelly and Edward Perry, recur on other Hyperion discs, so they look like the house team. A discography marks Kelly and Perry "Epr," and Ted Perry's full name was George Edward Perry; that he is this Edward Perry is my inference. I could not verify the producer or the venue. Hyperion's own booklet (PDF 55078-B, by Peter Lamb) blocked my request, so check the inlay.</p>
+  <p><strong>The technology.</strong> The catalog entry describes the CD as digital stereo, which tells you about the disc, not necessarily the session. The cassette is an analog copy of that program, made just as enthusiasm for the CD was peaking. From an earlier reading of the shell, it is chrome (Type II) with Dolby, the type unstated. Set a deck to chrome and try Dolby B first; if it sounds dull, switch it off.</p>
+  <p><strong>The cover.</strong> A photograph of orange-red maple leaves, backlit against a blue sky. It suits the Hyperion habit of pictures over performer portraits. I could not verify the photographer.</p>
+</section>
+
+<section id="matters" data-title="Why it matters" data-sub="Before the scholarship caught up">
+  <h2>Why it matters</h2>
+  <p class="lead">This is an early, serious pairing of two works now central to the rediscovery of women composers, made just before the scholarship caught up.</p>
+  <p><strong>Then.</strong> Neither trio was unknown to record collectors. The Clara had a likely first recording on Decca in 1951 and the Beaux Arts Trio's in 1972; the Macalester Trio recorded both for a Vox box in the late 1970s. What Hyperion offered was the two together as their own album, from a respected label. As late as 1979, a scholar had no catalog to work from and depended on the archive's director for access to Fanny's papers in Berlin, and a keeper of those papers dismissed her as just a housewife.</p>
+  <p><strong>Reviews.</strong> I found no contemporary 1989-90 review. <a href="https://www.classical-music.com/reviews/chamber/clara-schumann-fanny-mendelssohn">BBC Music Magazine's Martin Cotton</a> gave the Helios reissue four stars while calling both composers somewhat mechanical, and rating Fanny the more interesting. He does not discuss the Dartington's playing. Hyperion's own label calls the trio's recordings highly acclaimed, which is not independent evidence.</p>
+  <p><strong>Where critics disagree.</strong> Cotton hears Clara as less enterprising; Grimes hears a formal innovator who shaped Robert and Brahms. MusicWeb finds Clara's writing confident and Fanny's bold and forceful. As Grimes puts it, Clara's own self-doubt cast a long shadow over the piece.</p>
+  <p><strong>Against other recordings.</strong> The direct rival is Hyperion's own 2019 remake with the <a href="https://www.thestrad.com/reviews/nash-ensemble-clara-schumann-fanny-mendelssohn/10719.article">Nash Ensemble</a>, praised by The Strad for its song-like Andante and turbulent opening to the Fanny, and adding Fanny's string quartet. Anne-Sophie Mutter brought the Clara to Sony in 2022. The Dartington's advantage now is historical: it shows how these works sounded when they were still news.</p>
+  <p><strong>Cultural footprint.</strong> Clara's first movement is a set work on the Edexcel A-level syllabus in England, with the LSO teaching it. Fanny's story reached cinemas in the 2023 documentary <em>Fanny: The Other Mendelssohn</em>. I found no film, TV or ballpark use of either trio.</p>
+</section>
+
+<section id="listen" data-title="How to listen" data-sub="Clara, then Fanny">
+  <h2>How to listen</h2>
+  <p class="lead">Play Clara straight through, then Fanny, and ask one question of both: how does a great pianist share the room with two strings?</p>
+  <p>These notes come from the written music and published guides, and I have not heard this copy, so what the Dartington players do with each landmark is yours to find. Movement-by-movement notes live in <a href="#music">The music</a>; open any movement and read "Listen for."</p>
+  <div class="dark">
+    <h3 style="margin-top:0">Connections to the piano</h3>
+    <ul>
+      <li><strong>Three keys on the U1.</strong> Play a G minor scale, then G major, then B-flat major. Clara's movements live in those three moods. B-flat is G minor's relative major (same key signature), and G major is its parallel major (same home note).</li>
+      <li><strong>The D7.</strong> The D7 chord from Alfred's is the chord that pulls home to G. In G minor it is the engine of Clara's cadences, the musical punctuation at the ends of phrases.</li>
+      <li><strong>Bach.</strong> The Menuet in G from the Anna Magdalena book is a dance in three, like Clara's Scherzo. Her fugal writing comes from the same two-independent-lines idea, grown larger.</li>
+      <li><strong>Melody over accompaniment.</strong> Fanny's slow-movement openings use the layout from Alfred's: tune in one hand, flowing support in the other, only far richer.</li>
+    </ul>
+    <div class="hearkeys" role="group" aria-label="Hear the keys"><button type="button" data-hear="gmin">G minor</button><button type="button" data-hear="gmaj">G major</button><button type="button" data-hear="bbmaj">B-flat major</button><button type="button" data-hear="d7">D7 to G minor</button><button type="button" data-hear="dmin">D minor</button></div>
+    <p class="small" style="margin:0">Pressing one turns sound on and plays a short synthesized arpeggio. It is a key, not the music.</p>
+  </div>
+</section>
+
+<section id="next" data-title="If you like this" data-sub="Five next listens">
+  <h2>If you like this</h2>
+  <ul class="recs">
+    <li><b>The Nash Ensemble, Hyperion CDA68307 (2019 recording)</b>The same two trios plus Fanny's string quartet, the direct comparison with this tape.</li>
+    <li><b>Robert Schumann, Piano Trio No. 1 in D minor, Op. 63</b>The piece that made Clara doubt her own. Hear it right after side 1 and judge for yourself.</li>
+    <li><b>Felix Mendelssohn, Piano Trio No. 1 in D minor, Op. 49</b>Same key as Fanny's trio; the <a href="https://blog.highresaudio.com/en/album/view/a6hvhe/trio-chausson-fanny-felix-mendelssohn">Trio Chausson</a> recorded the siblings together.</li>
+    <li><b>Fanny Hensel, <em>Das Jahr</em></b>Her piano cycle, played on NPR in the Beer interview, and the best way to hear her alone at the keyboard.</li>
+    <li><b>Clara Schumann, Three Romances for violin and piano, Op. 22</b>Her only other chamber work, and a short step from the Andante.</li>
+  </ul>
+</section>
+
+<section id="deeper" data-title="Go deeper" data-sub="Watch, read, keep going">
+  <h2>Go deeper</h2>
+  <p class="lead">Start with the LSO seminar and Anna Beer's chapter on the pair, then move to Reich and Todd.</p>
+  <div class="tabs" role="tablist" aria-label="Recommendations">
+    <button role="tab" type="button" id="t-w" aria-controls="p-w" aria-selected="true">Watch</button>
+    <button role="tab" type="button" id="t-b" aria-controls="p-b" aria-selected="false" tabindex="-1">Books</button>
+    <button role="tab" type="button" id="t-a" aria-controls="p-a" aria-selected="false" tabindex="-1">Articles</button>
+  </div>
+  <div class="panel" id="p-w" role="tabpanel" aria-labelledby="t-w">
+    <p class="caveat">These links come from Wikipedia, the Open University and Anna Beer's site. YouTube throttled my checks, so only the LSO video was confirmed directly, and one link Wikipedia gives, a Claremont Trio score video of the Fanny, is dead. I could not confirm a working full video of the Fanny this session; <a href="https://www.imslp.org/wiki/Piano_Trio,_Op.11_(Hensel,_Fanny)">IMSLP</a> has the free score and a complete performance.</p>
+    <ul class="links">
+      <li><a href="https://www.youtube.com/watch?v=OmU2F3U3tbY" target="_blank" rel="noopener"><span class="lt">Clara Schumann: Piano Trio in G minor, LSO Discovery A-level Seminar</span><span class="lw">LSO musicians take the first movement apart and play it. The best first stop.</span></a></li>
+      <li><a href="https://www.youtube.com/watch?v=gtWFgZ2pbU8" target="_blank" rel="noopener"><span class="lt">Clara Schumann, Open University bicentenary film</span><span class="lw">A short introduction by Laura Hamer to her life, marriage and career.</span></a></li>
+      <li><a href="https://www.youtube.com/watch?v=C5dBOpy0_zg" target="_blank" rel="noopener"><span class="lt">Clara Schumann: Piano Trio in G minor, Galos Piano Trio</span><span class="lw">Live at St Martin in the Fields, 2015, so you can watch the three players hand off the themes.</span></a></li>
+      <li><a href="https://www.youtube.com/watch?v=MrkSwOtidhE" target="_blank" rel="noopener"><span class="lt">Beaux Arts Trio, 1972</span><span class="lw">A notable older recording, for a comparison with this tape.</span></a></li>
+      <li><a href="https://www.youtube.com/watch?v=6SNY2psmNi0" target="_blank" rel="noopener"><span class="lt">Mutter, Ferrández and Orkis, 2022</span><span class="lw">The star treatment, and the work's first Sony recording.</span></a></li>
+      <li><a href="https://www.youtube.com/watch?v=cU1AXL-MYeY" target="_blank" rel="noopener"><span class="lt">Decca, 1951</span><span class="lw">Likely the first recording ever made of Clara's trio.</span></a></li>
+      <li><a href="https://www.youtube.com/watch?v=_RSeqw1ziC0" target="_blank" rel="noopener"><span class="lt"><em>Fanny: The Other Mendelssohn</em> trailer</span><span class="lw">Sheila Hayman's 2023 documentary, with Isata Kanneh-Mason at the piano.</span></a></li>
+    </ul>
+  </div>
+  <div class="panel" id="p-b" role="tabpanel" aria-labelledby="t-b" hidden>
+    <ul class="links">
+      <li><a href="https://readings.com.au/product/9781786070678/sounds-and-sweet-airs--anna-beer--2017--9781786070678" target="_blank" rel="noopener"><span class="lt"><em>Sounds and Sweet Airs</em>, Anna Beer, 2016 <span class="tag">General reader</span></span><span class="lw">A lively group biography with chapters on both composers; read this first.</span></a></li>
+      <li><a href="https://mitpressbookstore.mit.edu/book/9780931340963" target="_blank" rel="noopener"><span class="lt"><em>Fanny Mendelssohn</em>, Françoise Tillard, trans. Camille Naish, 1996 <span class="tag">General reader</span></span><span class="lw">The first English-language biography of Fanny.</span></a></li>
+      <li><a href="https://www.waterstones.com/book/9780099750512" target="_blank" rel="noopener"><span class="lt"><em>Clara</em>, Janice Galloway (paperback 2003) <span class="tag">General reader</span></span><span class="lw">A novel, not a biography, for the emotional texture of that marriage.</span></a></li>
+      <li><a href="https://kirkusreviews.com/book-reviews/susanna-reich/clara-schumann" target="_blank" rel="noopener"><span class="lt"><em>Clara Schumann: Piano Virtuoso</em>, Susanna Reich, 1999 <span class="tag">General reader</span></span><span class="lw">A short illustrated life for young readers, and a fast overview.</span></a></li>
+      <li><a href="https://www.hoopladigital.com/ebook/clara-schumann-nancy-reich/12428323" target="_blank" rel="noopener"><span class="lt"><em>Clara Schumann: The Artist and the Woman</em>, Nancy B. Reich, revised 2001 <span class="tag sch">Scholarly</span></span><span class="lw">The standard biography, and readable; the best deep read on Clara.</span></a></li>
+      <li><a href="https://academic.oup.com/book/10738" target="_blank" rel="noopener"><span class="lt"><em>Fanny Hensel: The Other Mendelssohn</em>, R. Larry Todd, 2009 <span class="tag sch">Scholarly</span></span><span class="lw">The authoritative life and works, and a Slonimsky Award winner.</span></a></li>
+      <li><a href="https://www.cambridge.org/core/books/clara-schumann-studies/formal-innovation-and-virtuosity-in-clara-schumanns-piano-trio-in-g-minor-op-17/6CC786542EC8776977F5B87F9BA74CEA" target="_blank" rel="noopener"><span class="lt"><em>Clara Schumann Studies</em>, ed. Joe Davies, 2021 <span class="tag sch">Scholarly</span></span><span class="lw">Contains Nicole Grimes's chapter on this trio.</span></a></li>
+      <li><a href="https://lib.ecu.edu/catalog-preview/catalog/290941" target="_blank" rel="noopener"><span class="lt"><em>The Letters of Fanny Hensel to Felix Mendelssohn</em>, ed. Marcia J. Citron, 1987 <span class="tag sch">Scholarly</span></span><span class="lw">Her voice, in German and English.</span></a></li>
+    </ul>
+  </div>
+  <div class="panel" id="p-a" role="tabpanel" aria-labelledby="t-a" hidden>
+    <ul class="links">
+      <li><a href="https://www.inkl.com/news/a-fanny-mendelssohn-masterpiece-finally-gets-its-due" target="_blank" rel="noopener"><span class="lt">A Fanny Mendelssohn masterpiece finally gets its due</span><span class="lw">Sheila Hayman, The Guardian, 2017. Her descendant on the family, the blank manuscript paper and the Easter Sonata.</span></a></li>
+      <li><a href="https://www.npr.org/transcripts/478734604" target="_blank" rel="noopener"><span class="lt">'Sounds and Sweet Airs' remembers the forgotten women</span><span class="lw">NPR, 2016. Five minutes with Anna Beer, including the jewels story.</span></a></li>
+      <li><a href="https://blog.oup.com/2019/03/fanny-mendelssohn-hensel-womens-music/" target="_blank" rel="noopener"><span class="lt">What Fanny Mendelssohn Hensel tells us about women's music</span><span class="lw">Angela Mace Christian, OUPblog, 2019. The scholar who proved the Easter Sonata was hers.</span></a></li>
+      <li><a href="https://www.smithsonianmag.com/smart-news/sonata-fanny-mendelssohn-mistakenly-attributed-her-brother-premieres-under-her-name-180962429/" target="_blank" rel="noopener"><span class="lt">Sonata by Fanny Mendelssohn premieres under her name</span><span class="lw">Smithsonian, 2017. A clean account of the detective work.</span></a></li>
+      <li><a href="https://gramophone.co.uk/articles/hyperion-records-a-guide-to-the-great-british-record-label" target="_blank" rel="noopener"><span class="lt">Hyperion Records: a guide</span><span class="lw">Tim Parry, Gramophone, 2024. The label's history, cow included.</span></a></li>
+      <li><a href="https://www.cambridge.org/core/books/clara-schumann-studies/formal-innovation-and-virtuosity-in-clara-schumanns-piano-trio-in-g-minor-op-17/6CC786542EC8776977F5B87F9BA74CEA" target="_blank" rel="noopener"><span class="lt">Formal Innovation and Virtuosity in Op. 17</span><span class="lw">Nicole Grimes, 2021. The chapter summary, with the case for this trio's influence.</span></a></li>
+      <li><a href="https://fass.open.ac.uk/sites/fass.open.ac.uk/files/files/music/A%20Level%20Music%20C%20Schumann%20Piano%20Trio%2C%20Op_17.pdf" target="_blank" rel="noopener"><span class="lt">Clara Schumann: Piano Trio in G minor</span><span class="lw">Open University guide. A free teaching guide with landmarks for following the first movement.</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<section id="sources" data-title="Sources" data-sub="End of the tape">
+  <h2>Sources</h2>
+  <p>Pages opened for this article. Details described as an earlier reading come from a previous session's reading of the tape. A few items rest on search excerpts only: Proper Music, Marbecks, AllMusic, WNYC, the Wibaut and Evans pages, Presto, the Clara page at Earsense, and the book-seller pages.</p>
+  <ul class="sources">
+    <li><a href="https://catalog.berklee.edu/eg/opac/record/12074?locg=1">Berklee library catalog: Piano trios</a></li>
+    <li><a href="https://muzilla.ru/disco/release/24103163">Musical Heritage Society listing, 2008</a></li>
+    <li><a href="https://www.geneva.edu/~dksmith/clara/uned9">Exhaustive Discography of Clara Schumann's Music</a></li>
+    <li><a href="https://www.hyperion-records.co.uk/a.asp?a=A318">Hyperion: The Dartington Piano Trio</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Oliver_Butterworth_(violinist)">Wikipedia: Oliver Butterworth</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Hyperion_Records">Wikipedia: Hyperion Records</a></li>
+    <li><a href="https://gramophone.co.uk/articles/hyperion-records-a-guide-to-the-great-british-record-label">Gramophone: Hyperion guide</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Piano_Trio_(Clara_Schumann)">Wikipedia: Piano Trio (Clara Schumann)</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Piano_Trio_(Hensel)">Wikipedia: Piano Trio (Hensel)</a></li>
+    <li><a href="https://research.allclassical.org/composer/schumann-clara-wieck/piano-trio-in-g-minor-op-17/">All Classical: Op. 17</a></li>
+    <li><a href="https://research.allclassical.org/composer/mendelssohn-hensel-fanny/piano-trio-in-d-minor-op-11/">All Classical: Op. 11</a></li>
+    <li><a href="https://www.hollywoodbowl.com/musicdb/pieces/2860/piano-trio-in-d-minor-op-11">Hollywood Bowl: Op. 11</a></li>
+    <li><a href="https://fass.open.ac.uk/sites/fass.open.ac.uk/files/files/music/A%20Level%20Music%20C%20Schumann%20Piano%20Trio%2C%20Op_17.pdf">Open University: Clara Schumann guide</a></li>
+    <li><a href="https://www.cambridge.org/core/books/clara-schumann-studies/formal-innovation-and-virtuosity-in-clara-schumanns-piano-trio-in-g-minor-op-17/6CC786542EC8776977F5B87F9BA74CEA">Cambridge: Grimes chapter</a></li>
+    <li><a href="https://www.earsense.org/chamber-music/Fanny-Mendelssohn-Hensel-Piano-Trio-in-d-minor-Op-11/?ri=0">Earsense: Op. 11</a></li>
+    <li><a href="https://www.classical-music.com/reviews/chamber/clara-schumann-fanny-mendelssohn">BBC Music Magazine review</a></li>
+    <li><a href="https://www.thestrad.com/reviews/nash-ensemble-clara-schumann-fanny-mendelssohn/10719.article">The Strad: Nash Ensemble</a></li>
+    <li><a href="https://musicweb-international.com/classrev/2020/Jul/SchumannC_trio_CDA68307.htm">MusicWeb International: Nash Ensemble</a></li>
+    <li><a href="https://www.npr.org/transcripts/478734604">NPR: Anna Beer</a></li>
+    <li><a href="https://www.inkl.com/news/a-fanny-mendelssohn-masterpiece-finally-gets-its-due">The Guardian via inkl: Hayman</a></li>
+    <li><a href="https://www.smithsonianmag.com/smart-news/sonata-fanny-mendelssohn-mistakenly-attributed-her-brother-premieres-under-her-name-180962429/">Smithsonian: Easter Sonata</a></li>
+    <li><a href="https://blog.oup.com/2019/03/fanny-mendelssohn-hensel-womens-music/">OUPblog: Christian</a></li>
+  </ul>
+</section>
+</main>
+
+<div class="mini" data-mini>
+  <div class="miniprog" aria-hidden="true"><i data-minibar></i></div>
+  <div class="minireels" aria-hidden="true"><span class="barreel"><span class="reel" data-reel="a" style="left:50%;width:100%"></span></span><span class="barreel"><span class="reel" data-reel="z" style="left:50%;width:100%"></span></span></div>
+  <button class="mininow" type="button" aria-haspopup="dialog" data-sheet-open><b data-mini-t>At a glance</b><span data-mini-s>Tap for all sections</span></button>
+  <button class="minisound" type="button" aria-pressed="false" aria-label="Turn sound on">Sound</button>
+</div>
+<dialog class="sheet" data-sheet aria-label="Sections">
+  <header><h2>Sections</h2><button type="button" data-sheet-close>Close</button></header>
+  <nav><ol data-sheetlist></ol></nav>
+</dialog>
+
+<footer>
+  <p>A recording deep dive by Greg, November 2026, written for one copy of Hyperion KA66331.</p>
+  <p>Recordings, cover photography and label artwork belong to their rights holders; this page describes and links to them rather than reproducing them. Every sound here is synthesized in your browser: chords in each work's key, not the music and not the recording.</p>
+</footer>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(s,r){return (r||document).querySelector(s)}, $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var root = document.documentElement;
+  function buzz(ms){ if(navigator.vibrate && !reduce) try{navigator.vibrate(ms)}catch(e){} }
+
+  /* ===== Reels ===== */
+  var hubArt = '<i class="pack"></i><svg class="hub" viewBox="-20 -20 40 40"><circle r="19" fill="#F4EFE1"/><circle r="7" fill="#17110d"/><g fill="#17110d"><rect x="-2" y="-16" width="4" height="7"/><rect x="-2" y="9" width="4" height="7"/><rect x="-16" y="-2" width="7" height="4"/><rect x="9" y="-2" width="7" height="4"/></g></svg>';
+  $$('[data-reel]').forEach(function(r){ r.innerHTML = hubArt; });
+  var hubs = $$('.hub'), packA = $$('[data-reel="a"] .pack'), packZ = $$('[data-reel="z"] .pack');
+  var progress = 0;
+  function sizePacks(){
+    var a = 96 - progress*44, z = 52 + progress*44;
+    packA.forEach(function(p){ p.style.width = p.style.height = a+'%'; });
+    packZ.forEach(function(p){ p.style.width = p.style.height = z+'%'; });
+  }
+  sizePacks();
+
+  /* ===== Audio: opt-in, stereo ===== */
+  var ctx=null, master, busL, busR, hiss, soundOn=false;
+  var soundBtn=$('.sound'), soundLab=$('[data-sound-lab]'), miniSound=$('.minisound');
+  function initAudio(){
+    ctx = new (window.AudioContext||window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+    function bus(p){ var g=ctx.createGain(); if(ctx.createStereoPanner){ var s=ctx.createStereoPanner(); s.pan.value=p; g.connect(s); s.connect(master);} else g.connect(master); return g; }
+    busL = bus(-.8); busR = bus(.8);
+    var sr=ctx.sampleRate, b=ctx.createBuffer(1,sr*2,sr), d=b.getChannelData(0);
+    for(var i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*.02;
+    var src=ctx.createBufferSource(); src.buffer=b; src.loop=true;
+    var hp=ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=3000;
+    hiss=ctx.createGain(); hiss.gain.value=.4;
+    src.connect(hp); hp.connect(hiss); hiss.connect(master); src.start();
+    applyBuses();
+  }
+  function applyBuses(){ if(!ctx) return; busL.gain.value=Math.min(1,(1-bal)*2); busR.gain.value=Math.min(1,bal*2); }
+  function tone(f,when,dur,vol,b){
+    if(!soundOn||!ctx) return;
+    var t=ctx.currentTime+(when||0), g=ctx.createGain(), lp=ctx.createBiquadFilter();
+    lp.type='lowpass'; lp.frequency.setValueAtTime(Math.min(f*7,8000),t); lp.frequency.exponentialRampToValueAtTime(Math.max(f*1.4,280),t+dur);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+.008); g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+    [[1,'triangle',1],[2,'sine',.33],[3,'sine',.1]].forEach(function(h){ var o=ctx.createOscillator(), og=ctx.createGain(); o.type=h[1]; o.frequency.value=f*h[0]; og.gain.value=h[2]; o.connect(og); og.connect(lp); o.start(t); o.stop(t+dur+.05); });
+    lp.connect(g); g.connect(b||master);
+  }
+  var N={D3:146.83,F3:174.61,Fs3:185,G3:196,A3:220,Bb2:116.54,Bb3:233.08,B3:246.94,C4:261.63,D4:293.66,G4:392};
+  var CH={gmin:[N.G3,N.Bb3,N.D4,N.G4],gmaj:[N.G3,N.B3,N.D4,N.G4],bbmaj:[N.Bb2,N.D3,N.F3,N.Bb3],dmin:[N.D3,N.F3,N.A3,N.D4]};
+  function arp(name,b){
+    if(name==='d7'){ [N.D3,N.Fs3,N.A3,N.C4].forEach(function(f,i){tone(f,i*.11,1.3,.15)}); CH.gmin.forEach(function(f){tone(f,.72,2.1,.1)}); return; }
+    CH[name].forEach(function(f,i){tone(f,i*.14,1.7,.16,b)});
+  }
+  function setSound(on){
+    if(!ctx) initAudio();
+    soundOn=on; if(ctx.state==='suspended') ctx.resume();
+    master.gain.setTargetAtTime(on?1:0,ctx.currentTime,.05);
+    var t=on?'Turn sound off':'Turn sound on';
+    soundBtn.setAttribute('aria-pressed',on); soundLab.textContent=t;
+    miniSound.setAttribute('aria-pressed',on); miniSound.setAttribute('aria-label',t);
+    if(playing) showDeck();
+  }
+  soundBtn.addEventListener('click',function(){setSound(!soundOn)});
+  miniSound.addEventListener('click',function(){setSound(!soundOn)});
+
+  /* ===== Balance and sides ===== */
+  var bal=.5, side=1;
+  var rangeEls=$$('[data-bal]'), cassEls=$$('[data-cass]'), stereo=$('[data-stereo]'), sw=$$('.mono-sw button');
+  function setSide(s){
+    if(s===side) return; side=s;
+    cassEls.forEach(function(c){c.style.transform='rotateY('+(s===1?0:180)+'deg)'});
+    stereo.dataset.show=s;
+    if(cur>=0&&(cur<4?1:2)!==s){ cur=-1; showDeck(); }
+    sw.forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.side===s)});
+    buzz(14);
+  }
+  function setBal(v){
+    v=Math.max(0,Math.min(100,v)); bal=v/100;
+    root.style.setProperty('--bl',1-bal); root.style.setProperty('--br',bal);
+    root.style.setProperty('--cols','minmax(0,'+(1+(.5-bal)*.7).toFixed(3)+'fr) minmax(0,'+(1+(bal-.5)*.7).toFixed(3)+'fr)');
+    rangeEls.forEach(function(r){ if(+r.value!==Math.round(v)) r.value=v; });
+    if(v<50) setSide(1); else if(v>50) setSide(2);
+    applyBuses();
+  }
+  rangeEls.forEach(function(r){ r.addEventListener('input',function(){setBal(+r.value)}); });
+  sw.forEach(function(b){ b.addEventListener('click',function(){ setBal(+b.dataset.side===1?25:75); }); });
+
+  /* drag or tap the cassette */
+  var well=$('[data-well]'), dx0=null, v0=50, moved=false;
+  well.addEventListener('pointerdown',function(e){ dx0=e.clientX; v0=bal*100; moved=false; well.classList.add('drag'); well.setPointerCapture(e.pointerId); });
+  well.addEventListener('pointermove',function(e){ if(dx0===null) return; var d=e.clientX-dx0; if(Math.abs(d)>5) moved=true; if(moved) setBal(v0+d/well.offsetWidth*120); });
+  function dragEnd(){ if(dx0===null) return; dx0=null; well.classList.remove('drag'); if(!moved) flip(); }
+  well.addEventListener('pointerup',dragEnd); well.addEventListener('pointercancel',function(){dx0=null;well.classList.remove('drag')});
+  function flip(){ var had=cur>=0; setBal(side===1?75:25); if(had) setTrack(side===1?0:4,false); }
+
+  /* ===== Transport ===== */
+  var rows=$$('.mvt'), cur=-1, playing=false, tickN=0, timer=null;
+  var deckT=$('[data-deck-t]'), deckS=$('[data-deck-s]');
+  function who(n){ return n<4?'Clara Schumann':'Fanny Mendelssohn'; }
+  function showDeck(){
+    if(cur>=0){ deckT.textContent=rows[cur].dataset.name; deckS.textContent=who(cur)+', movement '+((cur%4)+1)+(playing?(soundOn?', playing its key':', silent'):''); }
+    else if(playing){ deckT.textContent='Left, then right'; deckS.textContent=soundOn?'Clara’s key, answered by Fanny’s':'Silent. Turn sound on to hear the keys'; }
+    else { deckT.textContent='Tape loaded'; deckS.textContent='Press Play, or turn the balance'; }
+  }
+  function setRowOpen(li,open){ li.dataset.open=open?'true':'false'; $('button',li).setAttribute('aria-expanded',open); }
+  function setBarNow(t,s){ $('[data-bar-t]').textContent=t; $('[data-bar-s]').textContent=s; $('[data-mini-t]').textContent=t; $('[data-mini-s]').textContent=s; }
+  function setTrack(i,open){
+    var prev=cur; cur=(i+8)%8;
+    if(open){ if(prev>=0) setRowOpen(rows[prev],false); setRowOpen(rows[cur],true); }
+    var wanted=cur<4?1:2; if(wanted!==side) setBal(wanted===1?25:75);
+    showDeck(); setBarNow(rows[cur].dataset.name,who(cur)+', movement '+((cur%4)+1));
+    arp(rows[cur].dataset.chord,cur<4?busL:busR);
+  }
+  function phrase(){
+    if(!soundOn) return;
+    var even=tickN++%2===0;
+    if(even) arp(cur>=0&&cur<4?rows[cur].dataset.chord:'gmin',busL); else arp('dmin',busR);
+  }
+  function setPlay(on){
+    playing=on; $('[data-t=play]').setAttribute('aria-pressed',on); showDeck();
+    clearInterval(timer); if(on){ tickN=0; phrase(); timer=setInterval(phrase,2300); }
+    if(reduce) needles();
+  }
+  $('[data-t=play]').addEventListener('click',function(){setPlay(!playing); buzz(10)});
+  $('[data-t=ff]').addEventListener('click',function(){setTrack(cur<0?0:cur+1,true); buzz(10)});
+  $('[data-t=rew]').addEventListener('click',function(){setTrack(cur<0?7:cur-1,true); buzz(10)});
+  $('[data-t=flip]').addEventListener('click',flip);
+
+  /* ===== Needles and spin ===== */
+  var nL=$('[data-needle=l]'), nR=$('[data-needle=r]'), boost=0, spin=0, last=performance.now();
+  function needleAt(n,g,l){ n.style.transform='rotate('+(-48+96*l*g)+'deg)'; }
+  function needles(t){
+    var gl=Math.min(1,(1-bal)*2), gr=Math.min(1,bal*2);
+    if(!playing){ needleAt(nL,0,0); needleAt(nR,0,0); return; }
+    var a=t?.52+.26*Math.sin(t/190)+.13*Math.sin(t/61):.6, b=t?.52+.26*Math.sin(t/230+2)+.13*Math.sin(t/73):.6;
+    needleAt(nL,gl,a); needleAt(nR,gr,b);
+  }
+  function frame(t){
+    var dt=Math.min(t-last,50); last=t; boost*=.93;
+    spin+=dt*((playing?.11:0)+boost);
+    hubs.forEach(function(h){h.style.transform='rotate('+spin+'deg)'});
+    needles(t);
+    requestAnimationFrame(frame);
+  }
+  if(!reduce) requestAnimationFrame(frame);
+
+  /* ===== Section progress ===== */
+  var main=$('#article'), sections=$$('section',main), hero=$('.hero'), bar=$('.tapebar'), mini=$('[data-mini]');
+  var ticks=$('[data-ticks]'), fill=$('[data-trackfill]'), minibar=$('[data-minibar]'), digits=$$('[data-c]'), list=$('[data-sheetlist]'), sheet=$('[data-sheet]');
+  sections.forEach(function(s){
+    var a=document.createElement('a'); a.href='#'+s.id; a.setAttribute('aria-label',s.dataset.title); a.innerHTML='<span>'+s.dataset.title+'</span>'; ticks.appendChild(a);
+    var li=document.createElement('li'), b=document.createElement('a'); b.href='#'+s.id; b.textContent=s.dataset.title; li.appendChild(b); list.appendChild(li);
+  });
+  var links=$$('a',ticks).concat($$('a',list));
+  function placeTicks(){
+    var top=main.offsetTop, span=Math.max(main.offsetHeight-innerHeight,1), as=$$('a',ticks);
+    sections.forEach(function(s,i){ var r=(s.getBoundingClientRect().top+scrollY-top)/span; as[i].style.left=Math.min(100,r*100)+'%'; });
+  }
+  var active=null, lastY=scrollY;
+  function onScroll(){
+    var r=main.getBoundingClientRect(), total=r.height-innerHeight;
+    progress=Math.max(0,Math.min(1,-r.top/Math.max(total,1)));
+    sizePacks();
+    fill.style.width=(progress*100)+'%'; minibar.style.width=(progress*100)+'%';
+    var c=String(Math.round(progress*999)); while(c.length<3) c='0'+c;
+    digits.forEach(function(d,i){d.textContent=c.charAt(i%3)});
+    boost=Math.min(boost+Math.abs(scrollY-lastY)*.004,1); lastY=scrollY;
+    var on=hero.getBoundingClientRect().bottom<innerHeight*.45;
+    bar.classList.toggle('show',on); mini.classList.toggle('show',on);
+    document.body.classList.toggle('mini-on',on); document.body.classList.toggle('bar-on',on);
+    var mid=innerHeight*.35, a=sections[0];
+    sections.forEach(function(s){ if(s.getBoundingClientRect().top<mid) a=s; });
+    if(a!==active){ active=a; setBarNow(a.dataset.title,a.dataset.sub);
+      links.forEach(function(l){l.setAttribute('aria-current',l.getAttribute('href')==='#'+a.id?'true':'false')}); }
+  }
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',function(){placeTicks();onScroll()});
+  placeTicks(); onScroll();
+  $('[data-sheet-open]').addEventListener('click',function(){ if(sheet.showModal) sheet.showModal(); else sheet.setAttribute('open',''); });
+  $('[data-sheet-close]').addEventListener('click',function(){sheet.close()});
+  sheet.addEventListener('click',function(e){ if(e.target===sheet||e.target.closest('a')) sheet.close(); });
+
+  /* ===== Movement rows ===== */
+  rows.forEach(function(li,i){
+    $('button',li).addEventListener('click',function(){
+      var open=li.dataset.open==='true';
+      setRowOpen(li,!open);
+      if(!open){ cur=i; showDeck(); setBarNow(li.dataset.name,who(i)+', movement '+((i%4)+1)); arp(li.dataset.chord,i<4?busL:busR); buzz(8); }
+      setTimeout(placeTicks,450);
+    });
+  });
+
+  /* ===== Timeline ===== */
+  var VIEWS={
+    lives:{from:1800,to:2026,axis:[1800,1850,1900,1950,2000,2026],band:{at:1988,label:'1988: this session'},
+      lanes:[
+        {cls:'c',name:'Clara Schumann',life:[1819,1896],ev:[
+          [1819,'1819: Clara Wieck is born','Trained by her father from age five; she played the Leipzig Gewandhaus at nine.'],
+          [1840,'1840: She marries Robert Schumann','The marriage took a lawsuit against her father.'],
+          [1846,'1846-47: Her trio','Written May to September 1846, premiered in Vienna on January 15, 1847, published that year with no dedication.'],
+          [1856,'1856: Robert dies','She mostly stops composing and spends four more decades as one of Europe’s leading pianists.'],
+          [1896,'1896: Clara dies','Four decades after Robert\u2019s death.']]},
+        {cls:'f',name:'Fanny Mendelssohn',life:[1805,1847],ev:[
+          [1805,'1805: Fanny is born','She had the same education as Felix until the point it mattered.'],
+          [1846.5,'1846-47: Publishes, premieres, dies','Only in 1846 does she publish under her own name. Her trio is premiered April 11, 1847. She dies May 14.'],
+          [1850,'1850: Op. 11 is published','Breitkopf & Härtel publish the trio three years after her death.'],
+          [2010,'2010: The Easter Sonata','Angela Mace Christian proves Fanny, not Felix, wrote it.']]},
+        {cls:'rec',name:'On record',life:[1951,2026],ev:[
+          [1951,'1951: Decca','Likely the first recording of Clara’s trio.'],
+          [1972,'1972: Beaux Arts Trio','Clara’s trio alongside Robert’s.'],
+          [1978,'Late 1970s: Macalester Trio','Both trios, on a Vox box of chamber works by women.'],
+          [1988,'November 28-29, 1988: This session','The Dartington Piano Trio records the two together for Hyperion. The CD follows in December 1989.',1],
+          [2019,'2019: The Nash Ensemble','Hyperion’s own remake of the pairing, with Fanny’s string quartet.'],
+          [2022,'2022: Mutter, Ferrández, Orkis','The first Sony recording of Clara’s trio.']]}
+      ]},
+    months:{from:1846,to:1848,axis:[[1846,'Jan 1846'],[1846.5,'Jul 1846'],[1847,'Jan 1847'],[1847.5,'Jul 1847'],[1848,'Dec 1847']],
+      lanes:[
+        {cls:'c',name:'Clara, Dresden and Vienna',life:[1846.37,1846.71],ev:[
+          [1846.1,'February 1846: Emil is born','Her son is very ill from the start.'],
+          [1846.37,'May 1846: She begins the trio','In Dresden, after a winter studying Bach and Cherubini counterpoint with Robert.'],
+          [1846.55,'Summer 1846: Norderney','She suffers what sources describe as a likely miscarriage and gives a concert the next day.'],
+          [1846.71,'September 1846: She finishes it','She completes it after the family returns from Norderney.'],
+          [1847.04,'January 15, 1847: Premiere in Vienna','Reviewers praise its clarity, while expressing surprise at such control from a woman.'],
+          [1847.45,'June 1847: Emil dies','The same year Robert’s first trio appears, and Clara hears her own differently.']]},
+        {cls:'f',name:'Fanny, Berlin',life:[1847.2,1847.37],ev:[
+          [1847.2,'March 1847: Clara visits almost daily','Fanny writes in her diary that the trio is giving her a lot of trouble.'],
+          [1847.28,'April 11, 1847: Premiere in Berlin','Fanny at the piano, Robert von Keudell on violin, her brother Paul on cello, at her Sunday concert series.'],
+          [1847.37,'May 14, 1847: Fanny dies','A stroke while rehearsing Felix’s Die erste Walpurgisnacht. She is 41.'],
+          [1847.84,'November 1847: Felix dies','Of the same cause, after writing his F minor quartet in her memory.']]}
+      ]}
+  };
+  var tl=$('[data-tl]'), cap=$('[data-tl-cap]');
+  function drawTL(key){
+    var V=VIEWS[key], P=function(y){return (y-V.from)/(V.to-V.from)*100};
+    tl.innerHTML=''; cap.textContent='Select a point on any lane to read what happened.';
+    V.lanes.forEach(function(L){
+      var lane=document.createElement('div'); lane.className='lane '+L.cls;
+      var nm=document.createElement('span'); nm.className='nm'; nm.textContent=L.name; lane.appendChild(nm);
+      var life=document.createElement('div'); life.className='life'; life.style.left=P(L.life[0])+'%'; life.style.width=(P(L.life[1])-P(L.life[0]))+'%'; lane.appendChild(life);
+      L.ev.forEach(function(e){
+        var b=document.createElement('button'); b.type='button'; b.className='dot'+(e[3]?' mark':''); b.style.left=P(e[0])+'%'; b.setAttribute('aria-label',e[1]);
+        function show(){ $$('.dot.on',tl).forEach(function(x){x.classList.remove('on')}); b.classList.add('on'); cap.innerHTML=''; var h=document.createElement('b'); h.textContent=e[1]; cap.appendChild(h); cap.appendChild(document.createTextNode(e[2])); }
+        b.addEventListener('mouseenter',show); b.addEventListener('focus',show); b.addEventListener('click',function(){show(); tone(L.cls==='f'?N.D4:N.G4,0,1.1,.13,L.cls==='f'?busR:busL); buzz(8)});
+        lane.appendChild(b);
+      });
+      tl.appendChild(lane);
+    });
+    if(V.band){ var bd=document.createElement('div'); bd.className='tl-band'; bd.style.left=P(V.band.at)+'%'; bd.innerHTML='<span>'+V.band.label+'</span>'; tl.insertBefore(bd,tl.firstChild); }
+    var ax=document.createElement('div'); ax.className='axis';
+    V.axis.forEach(function(a){ var y=a.length?a[0]:a, t=a.length?a[1]:a, s=document.createElement('span'); s.style.left=P(y)+'%'; s.textContent=t; ax.appendChild(s); });
+    tl.appendChild(ax);
+  }
+  $$('.views button').forEach(function(b){ b.addEventListener('click',function(){ $$('.views button').forEach(function(x){x.setAttribute('aria-pressed',x===b)}); drawTL(b.dataset.view); }); });
+  drawTL('lives');
+
+  /* ===== Stage ===== */
+  var BIOS={
+    violin:{n:'Oliver Butterworth, violin',d:'He studied at the Royal Academy and in Prague, joined the English Chamber Orchestra in 1971, and led the Dartington Ensemble and Piano Trio from 1981. He taught at Dartington College of Arts, then at Trinity College of Music from 1989, the year this tape appeared.',f:[N.G4,N.D4]},
+    piano:{n:'Frank Wibaut, piano',d:'He launched his career by winning the London Chopin and BBC piano competitions, and has played in over 40 countries. His chamber partners included Jacqueline du Pré, Lynn Harrell and Nigel Kennedy. He became a professor at both the Royal College and Royal Academy of Music. Both trios here live or die on the piano part, so he is the player to follow.',f:[N.G3,N.D4]},
+    cello:{n:'Michael Evans, cello',d:'Evidence here is thin. A Wikitia entry describes a Michael Evans (1932-2021), pupil of William Pleeth, who played in the Dartington String Quartet and taught at Dartington College. That fits, and former students confirm the quartet role. I could not confirm from a stronger source that he is this trio’s cellist, or the entry’s claim that he played a 1726 Stradivarius.',f:[N.D3,N.G3]}
+  };
+  var bio=$('[data-bio]');
+  $$('.seat').forEach(function(s){
+    var B=BIOS[s.dataset.who];
+    function show(){ $$('.seat.on').forEach(function(x){x.classList.remove('on')}); s.classList.add('on'); bio.innerHTML=''; var h=document.createElement('b'); h.textContent=B.n; var p=document.createElement('p'); p.textContent=B.d; bio.appendChild(h); bio.appendChild(p); }
+    s.addEventListener('mouseenter',show); s.addEventListener('focus',show);
+    s.addEventListener('click',function(){show(); B.f.forEach(function(f,i){tone(f,i*.12,1.4,.15)}); buzz(8)});
+  });
+
+  /* ===== Hear the keys ===== */
+  $$('[data-hear]').forEach(function(b){ b.addEventListener('click',function(){ if(!soundOn) setSound(true); arp(b.dataset.hear); }); });
+
+  /* ===== Tabs ===== */
+  var tabs=$$('[role=tab]');
+  function sel(t){ tabs.forEach(function(x){ var on=x===t; x.setAttribute('aria-selected',on); x.tabIndex=on?0:-1; document.getElementById(x.getAttribute('aria-controls')).hidden=!on; }); setTimeout(placeTicks,50); }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){sel(t)});
+    t.addEventListener('keydown',function(e){ var n=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0; if(n){ var x=tabs[(i+n+tabs.length)%tabs.length]; sel(x); x.focus(); e.preventDefault(); } });
+  });
+  addEventListener('load',placeTicks);
+})();
+</script>
+</body>
+</html>
